@@ -60,6 +60,5 @@ MANIFEST
 .idea/
 .vscode/
 
+# media
 media
-
-static
