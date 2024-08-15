@@ -1,0 +1,38 @@
+{% extends 'parent/base.html' %}
+{% load static %}
+{% block title %}
+    Profile
+{% endblock %}
+
+{% block content %}
+    <div class="profile-page">
+        <div class="profile-container">
+            <div class="img-avatar">
+                {% if user.avatar %}
+                	<img width="200" height="200" src="{{ user.avatar.url }}" alt="avatar">
+                    {% else %}
+                    <img width="200" height="200" src="{% static 'images/defualt-profile.jpg' %}" alt="avatar">
+                {% endif %} 
+            </div>
+
+            
+                <div class="user-description">
+                    <p><strong>Job:</strong> {{ user.job }}</p>
+                    <span>{{ user.bio }}</span>
+                </div>
+
+                <div class="contact-container">
+                    <span>followers:10</span>
+                    <span>following:10</span>
+
+                </div>
+            
+
+            <div class="actions">
+                <button class="btn-setting"><a href="{% url 'account:setting' %}">Setting</a></button>
+                <button class="btn-change-profile"><a href="{% url 'account:edit_profile' %}">Change Profile</a></button>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

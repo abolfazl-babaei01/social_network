@@ -1,0 +1,39 @@
+{% extends 'parent/base.html' %}
+
+{% block title %}
+    setting({% if user.first_name %}{{ user.first_name }}{% else %}{{ user }}{% endif %})
+{% endblock %}
+
+{% block content %}
+
+    <div class="setting-container">
+
+        <div class="user-options">
+            <p><a href="{% url 'account:password_change' %}">Change Password</a></p>
+            <p><a href="{% url 'account:password_reset' %}">Forgot Password</a></p>
+
+            <p><a href="">Delete Account</a></p>
+
+            <p><a href="">Contact Support</a></p>
+
+            <p><a href="">Suggestions</a></p>
+            <form method="post" action="{% url 'account:logout' %}">
+                {% csrf_token %}
+                <button type="submit">logout</button>
+            </form>
+        </div>
+
+        <div class="saves">
+
+            <p>{{ user }} save posts</p>
+            <hr>
+        </div>
+
+    </div>
+
+    <div class="likes">
+        
+            <p> Recently liked</p>
+        
+    </div>
+{% endblock %}

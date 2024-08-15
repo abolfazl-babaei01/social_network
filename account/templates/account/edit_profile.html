@@ -1,0 +1,16 @@
+{% extends 'parent/base.html' %}
+
+{% block title %}
+	Edit Profile
+{% endblock %}
+
+{% block content %}
+    <div class="form-container">
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="edit-button">Edit</button>
+</form>
+    </div>
+
+{% endblock %}
