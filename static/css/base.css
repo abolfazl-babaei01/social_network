@@ -1,80 +1,55 @@
 body {
     font-family: "Segoe UI", system-ui, sans-serif;
-
-}
-
-/* start profile ُ*/
-
-
-.profile-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #e7dfdf;
-
-}
-
-.profile-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin: 20px;
     padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    width: 300px;
-    background-color: #fff;
-    box-shadow: 0 0 10px black;
+    /*background-color: ;*/
 }
 
-.img-avatar {
-    margin-bottom: 20px;
-}
 
-.img-avatar img {
-    border-radius: 50%;
-    border: 2px solid #ddd;
-}
+/*start footer*/
 
-.user-description {
-    text-align: center;
-    margin-bottom: 15px;
 
-}
-
-.contact-container {
-    text-align: center;
-    margin-bottom: 10px;
-
-}
-
-.actions {
-    display: flex;
-    flex-direction: row;
-    gap: 15px;
-}
-
-.actions a {
-    color: white;
-    text-decoration: none;
-}
-
-.btn-setting, .btn-change-profile {
+.footer {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    width: 90%;
+    transform: translateX(-50%);
+    background-color: #dcd9d9;
+    border-radius: 15px;
     padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    font-size: 16px;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.btn-setting:hover, .btn-change-profile:hover {
-    background-color: #0056b3;
+.nav {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav li a {
+    text-decoration: none;
+    color: #000;
+    font-size: 24px;
 }
 
 
-/* end profile ُ*/
+.nav a:hover i {
+    color: #f39c12;
+}
+
+
+svg {
+    font-size: 20px;
+
+}
+
+/*end footer*/
+
+
 
 /*start form style*/
 .form-container {
@@ -132,3 +107,333 @@ body {
 }
 
 /*end form style*/
+
+/* start home style */
+.post-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+
+.post {
+    background-color: #fff;
+    border: 1px solid #dbdbdb;
+    margin-bottom: 20px;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #dbdbdb;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.post-images {
+    width: 100%;
+    height: auto;
+}
+
+.post-images img {
+    width: 100%;
+    display: block;
+}
+
+.slider {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+}
+
+.slider img {
+    width: 100%;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+}
+
+.post-body {
+    padding: 10px;
+}
+
+.post-body p {
+    margin: 5px 0;
+}
+
+.post-body i {
+    color: #ed4956;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #dbdbdb;
+    margin: 0;
+}
+
+.like-post {
+
+    cursor: pointer;
+    display: inline;
+}
+
+.save-post {
+    display: inline;
+    margin: 200px;
+    cursor: pointer;
+}
+
+.save-post:hover {
+    background-color: #007bb5;
+}
+
+/* end home style */
+
+/*start explore style*/
+
+.title {
+    font-size: 24px;
+    color: #333;
+    margin: 1%;
+}
+
+.users-container {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 10px 0;
+    margin: 1%;
+}
+
+.user-con {
+    display: inline-block;
+    margin-right: 20px;
+    text-align: center;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #fff;
+    width: 180px;
+    height: 180px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.user-con img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 5px;
+    border: 2px solid #dbdbdb;
+}
+
+.user-con p {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.user-con a {
+    text-decoration: none;
+    color: #000;
+}
+
+.users-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.users-container::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
+
+.users-container::-webkit-scrollbar-track {
+    background-color: #fafafa;
+}
+
+.user-posts-ex {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.user-post-ex img {
+    width: 200px;
+    height: 200px;
+    border-radius: 3px;
+    object-fit: cover;
+}
+
+/*end explore style*/
+
+/* start user page and profile style*/
+
+
+.user-page {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #dbdbdb;
+    border-radius: 8px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 90px;
+}
+
+.avatar {
+    flex-shrink: 0;
+    margin-right: 20px;
+}
+
+.avatar img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 2px solid #dbdbdb;
+}
+
+.user-info {
+    flex-grow: 1;
+}
+
+.user-info h2 {
+    font-size: 24px;
+    margin: 0;
+    color: #333;
+}
+
+.stats {
+    display: flex;
+    gap: 20px;
+    margin: 20px 200px;
+    font-size: 16px;
+    color: #555;
+}
+
+.stats span {
+    font-weight: bold;
+}
+
+.user-actions {
+    display: flex;
+    gap: 10px;
+    margin-inline: 210px;
+}
+
+.user-actions a {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.follow-btn,
+.message-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.follow-btn {
+    background-color: #0095f6;
+    color: #fff;
+}
+
+.message-btn {
+    background-color: #efefef;
+    color: #333;
+}
+
+.user-posts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.user-post img {
+    width: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+
+
+/*------------profile buttons---------------*/
+
+.actions {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+
+.actions a {
+    color: white;
+    text-decoration: none;
+}
+
+.btn-setting, .btn-change-profile {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-setting:hover, .btn-change-profile:hover {
+    background-color: #0056b3;
+}
+
+/* end user page and profile style*/
+
+/* The Modal (background) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 90%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: -2% auto;
+    padding: 30px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
+}
+
+/* Close Button */
+.close {
+    margin:-36px -24px 0 0 ;
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}

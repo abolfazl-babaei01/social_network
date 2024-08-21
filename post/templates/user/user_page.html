@@ -1,7 +1,8 @@
 {% extends 'parent/base.html' %}
 {% load static %}
+
 {% block title %}
-    Profile
+
 {% endblock %}
 
 {% block content %}
@@ -16,19 +17,37 @@
             </div>
             <div class="user-info">
                 <h2>{{ user.username }}</h2>
+            
+
                 <div class="stats">
                     <span><strong>{{ user.posts.count }}</strong> posts</span>
                     <span><strong id="followers-count">{{ user.followers.count }}</strong> followers</span>
                     <span><strong id="following-count">{{ user.following.count }}</strong> following</span>
+
                 </div>
+                
+                
                 <div class="user-actions">
 
 
-                    <button class="btn-setting"><a href="{% url 'account:setting' %}">Setting</a></button>
-                    <button class="btn-change-profile"><a href="{% url 'account:edit_profile' %}">Change Profile</a>
+                    <button data-csrf-token="{{ csrf_token }}" id="follow-and-unfollow" value="{{ user.id }}"
+                            class="follow-btn">
+                        {% if request.user in user.followers.all %}
+                            Un Follow
+                        {% else %}
+                            Follow
+                        {% endif %}
                     </button>
 
+
+                    <button class="message-btn">Message</button>
+
                 </div>
+{#            <div class="user-details">#}
+{#                    <span>/{{ user.job }}</span>#}
+{#                    <span><strong><b>bio:</b></strong> {{ user.bio }}</span>#}
+{#                    <pre>{{ user.get_full_name }}</pre>#}
+{#                </div>#}
             </div>
         </div>
         <div class="user-posts">
@@ -39,12 +58,13 @@
             {% endfor %}
         </div>
     </div>
+    
     <div id="postModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <div id="modal-body">
-                <!-- Post details will be loaded here -->
-            </div>
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div id="modal-body">
+            <!-- Post details will be loaded here -->
         </div>
     </div>
+</div>
 {% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'parent/base.html' %}
+{% load static %}
+{% block title %}
+    Explore
+{% endblock %}
+
+{% block content %}
+    <hr>
+    <h2 class="title">Suggested Users</h2>
+    <div class="users-container">
+        {% for user in users %}
+            <div class="user-con">
+                {% if user.avatar %}
+                    <img src="{{ user.avatar.url }}" alt="User Avatar">
+                {% else %}
+                    <img src="{% static 'images/defualt-profile.jpg' %}" alt="User Avatar">
+                {% endif %}
+                <p><b><a href="{% url 'post:user_page' username=user.username %}">{{ user.username }}</a></b></p>
+                <pre>{{ user.get_full_name }}</pre>
+            </div>
+        {% endfor %}
+    </div>
+    <hr>
+    <h2 class="title">Popular Posts</h2>
+    <div class="user-posts-ex">
+        {% for post in pop_posts %}
+            <div class="user-post-ex">
+                    <img src="{{ post.images.first.file.url }}" alt="" onclick="showPostDetail('{{ post.id }}')">
+            </div>
+        {% endfor %}
+    </div>
+    
+<div id="postModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div id="modal-body">
+            <!-- Post details will be loaded here -->
+        </div>
+    </div>
+</div>
+{% endblock %}

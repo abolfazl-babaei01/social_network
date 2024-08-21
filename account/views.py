@@ -2,16 +2,16 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse
+
 # other
-from .models import SocialUser
+from .models import SocialUser, Contact
 from .forms import CreateSocialUserForm, EditSocialUserForm
+from post.models import Post
 
 
 # Create your views here.
-
-
-def index(request):
-    return render(request, 'account/index.html')
 
 
 def register(request):
@@ -52,3 +52,65 @@ def edit_profile(request):
     else:
         form = EditSocialUserForm(instance=user)
     return render(request, 'account/edit_profile.html', {'user': user, 'form': form})
+
+
+@require_POST
+def follow_user(request):
+    user_id = request.POST.get('user_id')
+
+    if user_id:
+        try:
+            user = get_object_or_404(SocialUser, id=user_id, is_active=True)
+            if user == request.user:
+                return JsonResponse({'follow_yourself': True})
+            if request.user in user.followers.all():
+                Contact.objects.filter(user_from=request.user, user_to=user).delete()
+                followed = False
+            else:
+                Contact.objects.create(user_from=request.user, user_to=user)
+                followed = True
+            followers_count = user.followers.count()
+            following_count = user.following.count()
+            return JsonResponse({'followers_count': followers_count, 'following_count': following_count,
+                                 'followed': followed})
+
+        except SocialUser.DoesNotExist:
+            return JsonResponse({'error': 'User not found'})
+    return JsonResponse({'error': 'Bad request'})
+
+
+@require_POST
+def like_post(request):
+    post_id = request.POST.get('post_id')
+    if post_id:
+        try:
+            post = get_object_or_404(Post, id=post_id, is_published=True)
+            if request.user in post.likes.all():
+                post.likes.remove(request.user)
+                liked = False
+            else:
+                post.likes.add(request.user)
+                liked = True
+            response = {'liked': liked, 'like_count': post.likes.count()}
+            return JsonResponse(response)
+        except Exception as e:
+            return JsonResponse({'error': e})
+    return JsonResponse({'Bad request': 'Post not found'})
+
+
+@require_POST
+def save_post(request):
+    post_id = request.POST.get('post_id')
+    if post_id:
+        try:
+            post = get_object_or_404(Post, id=post_id, is_published=True)
+            if request.user in post.save_by.all():
+                post.save_by.remove(request.user)
+                saved = False
+            else:
+                post.save_by.add(request.user)
+                saved = True
+            return JsonResponse({'saved': saved})
+        except Exception as e:
+            return JsonResponse({'error': 'Post not found'})
+    return JsonResponse({'Bad request': 'Post not found'})
