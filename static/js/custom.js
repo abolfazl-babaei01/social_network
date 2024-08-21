@@ -70,7 +70,6 @@ $(document).ready(function () {
 })
 
 function showPostDetail(postId) {
-    // Perform an AJAX request to get the post details
     fetch(`/post/${postId}/`)
         .then(response => response.text())
         .then(data => {
@@ -83,7 +82,7 @@ function closeModal() {
     document.getElementById('postModal').style.display = 'none';
 }
 
-// Close the modal if the user clicks outside the modal-content area
+
 window.onclick = function(event) {
     let modal = document.getElementById('postModal');
     if (event.target === modal) {
