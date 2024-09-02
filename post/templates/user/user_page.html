@@ -17,16 +17,19 @@
             </div>
             <div class="user-info">
                 <h2>{{ user.username }}</h2>
-            
+
 
                 <div class="stats">
                     <span><strong>{{ user.posts.count }}</strong> posts</span>
-                    <span><strong id="followers-count">{{ user.followers.count }}</strong> followers</span>
-                    <span><strong id="following-count">{{ user.following.count }}</strong> following</span>
+                    <span><strong id="followers-count">{{ user.followers.count }}</strong> <a
+                            href="{% url 'account:user_contact' username=user.username relation='followers' %}">followers</a></span>
+                    <span><strong id="following-count">{{ user.following.count }}</strong> 
+                        <a href="{% url 'account:user_contact' username=user.username relation='following' %}">following</a>
+                    </span>
 
                 </div>
-                
-                
+
+
                 <div class="user-actions">
 
 
@@ -43,11 +46,11 @@
                     <button class="message-btn">Message</button>
 
                 </div>
-{#            <div class="user-details">#}
-{#                    <span>/{{ user.job }}</span>#}
-{#                    <span><strong><b>bio:</b></strong> {{ user.bio }}</span>#}
-{#                    <pre>{{ user.get_full_name }}</pre>#}
-{#                </div>#}
+                {#            <div class="user-details">#}
+                {#                    <span>/{{ user.job }}</span>#}
+                {#                    <span><strong><b>bio:</b></strong> {{ user.bio }}</span>#}
+                {#                    <pre>{{ user.get_full_name }}</pre>#}
+                {#                </div>#}
             </div>
         </div>
         <div class="user-posts">
@@ -58,13 +61,13 @@
             {% endfor %}
         </div>
     </div>
-    
+
     <div id="postModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <div id="modal-body">
-            <!-- Post details will be loaded here -->
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modal-body">
+                <!-- Post details will be loaded here -->
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}

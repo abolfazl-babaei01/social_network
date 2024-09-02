@@ -1,37 +1,64 @@
-
-	<div class="post">
-            <div class="post-header">
-                <img src="{{ post.author.avatar.url }}" alt="avatar" class="avatar">
-                <p>{{ post.author.username }}</p>
+<div class="post">
+    <div class="post-header">
+        <img src="{{ post.author.avatar.url }}" alt="avatar" class="avatar">
+        <p>{{ post.author.username }}</p>
+    </div>
+    <div class="post-images">
+        {% if post.images.count > 1 %}
+            <div class="slider">
+                {% for image in post.images.all %}
+                    <img src="{{ image.file.url }}" alt="Post Image">
+                {% endfor %}
             </div>
-            <div class="post-images">
-                {% if post.images.count > 1 %}
-                    <div class="slider">
-                        {% for image in post.images.all %}
-                            <img src="{{ image.file.url }}" alt="Post Image">
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    <img src="{{ post.images.first.file.url }}" alt="Post Image">
-                {% endif %}
-            </div>
-            <div class="post-body">
-                <p>{{ post.author.username }}: {{ post.description }}</p>
-                <p class="like-post" data-post-id="{{ post.id }}" data-csrf-token="{{ csrf_token }}">
-                    <i class=" {% if request.user in post.likes.all %} fa-solid{% else %} fa-regular {% endif %} fa-heart"></i>
-                    <span class="like-count">{{ post.likes.count }}</span> Likes
-                </p>
-              <span class="save-post" data-post-id="{{ post.id }}" data-csrf-token="{{ csrf_token }}">
+        {% else %}
+            <img src="{{ post.images.first.file.url }}" alt="Post Image">
+        {% endif %}
+    </div>
+    <div class="post-body">
+        <p>{{ post.author.username }}: {{ post.description }}</p>
+        <p class="like-post" data-post-id="{{ post.id }}" data-csrf-token="{{ csrf_token }}">
+            <i class=" {% if request.user in post.likes.all %} fa-solid{% else %} fa-regular {% endif %} fa-heart"></i>
+            <span class="like-count">{{ post.likes.count }}</span> Likes
+        </p>
+        <span class="save-post" data-post-id="{{ post.id }}" data-csrf-token="{{ csrf_token }}">
 
-                    <i class="fa {% if request.user in post.save_by.all %}fa-calendar-week{% else %}fa-calendar-plus{% endif %}"></i>
+                    <i class="{% if request.user in post.save_by.all %}fas fa-bookmark{% else %}far fa-bookmark{% endif %}"></i>
 
                 </span>
-                <p>Tags:
-                    {% for tag in post.tags.all %}
-                        #{{ tag.name }}
-                    {% endfor %}
-                </p>
+        <p>Tags:
+            {% for tag in post.tags.all %}
+                #{{ tag.name }}
+            {% endfor %}
+        </p>
 
+    </div>
+</div>
+{# comment division #}
+<div class="comment-area">
+    <div class="comment-section">
+  <div class="comment-box">
+    <textarea id="comment-text" placeholder="Add a comment..."></textarea>
+      <input type="hidden" class="parent-id" value="">
+    <button class="btn-post send-comment" data-post-id="{{ post.id }}" data-csrf-token="{{ csrf_token }}">
+      <i class="fas fa-paper-plane"></i>
+    </button>
+  </div>
+
+  <div id="comment">
+      {% for comment in comments %}
+      	<p><strong>{{ comment.author }}:</strong>  {{ comment.text }}</p>
+          <button class="btn-reply" onclick="addParentId('{{ comment.id }}')">Reply</button>
+          
+          {% for sub_comment in comment.sub_comments.all %}
+          	<div class="sub-comments">
+            <span>reply to {{ sub_comment.parent.author }}</span>
+                <p><strong>{{ sub_comment.author }}:</strong>{{ sub_comment.text }}</p>
+            
             </div>
-        </div>
+          {% endfor %}
+          <hr>
+      {% endfor %}
+  </div>
+</div>
+</div>
 

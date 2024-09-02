@@ -1,0 +1,29 @@
+{% extends 'parent/base.html' %}
+{% load static %}
+{% block title %}
+    {{ user }} {{ relation }}
+{% endblock %}
+
+{% block content %}
+    {% if users %}
+    	<hr>
+    <h2 class="title">{{ user }} {{ relation }}</h2>
+        <div class="users-container">
+            {% for user in users %}
+                <div class="user-con">
+                    {% if user.avatar %}
+                        <img src="{{ user.avatar.url }}" alt="User Avatar">
+                    {% else %}
+                        <img src="{% static 'images/defualt-profile.jpg' %}" alt="User Avatar">
+                    {% endif %}
+                    <p><b><a href="{% url 'post:user_page' username=user.username %}">{{ user.username }}</a></b></p>
+                    <pre>{{ user.get_full_name }}</pre>
+                </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="alert"> user {{ user }} not {{ relation }} </p>
+    {% endif %} 
+
+
+{% endblock %}

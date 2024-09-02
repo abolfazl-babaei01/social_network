@@ -15,6 +15,12 @@ class SocialUser(AbstractUser):
     def __str__(self):
         return str(self.username)
 
+    def get_followers(self):
+        return [contact.user_from for contact in self.rel_to_set.all().order_by('-created')]
+
+    def get_followings(self):
+        return [contact.user_to for contact in self.rel_form_set.all().order_by('-created')]
+
 
 class Contact(models.Model):
     user_from = models.ForeignKey(SocialUser, on_delete=models.CASCADE, related_name='rel_form_set')
@@ -29,4 +35,3 @@ class Contact(models.Model):
 
     def __str__(self):
         return f'{self.user_from} follows {self.user_to}'
-

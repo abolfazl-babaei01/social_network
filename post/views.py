@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post
+from .models import Post, Comment
 from account.models import SocialUser
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
-
+@login_required
 def home(request):
     user = get_object_or_404(SocialUser, id=request.user.id)
     following_user = user.following.all()
@@ -31,4 +32,6 @@ def user_page(request, username):
 
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    return render(request, 'post/post_detail.html', {'post': post})
+    comments = Comment.objects.filter(post_id=post.id, parent=None, is_published=True).prefetch_related(
+        'sub_comments').order_by('-created')
+    return render(request, 'post/post_detail.html', {'post': post, 'comments': comments})

@@ -30,4 +30,7 @@ urlpatterns = [
     path('follow-user/', views.follow_user, name='follow_user'),
     path('like-post/', views.like_post, name='like_post'),
     path('save-post/', views.save_post, name='save_post'),
+    path('add-comment/', views.add_comment, name='add_comment'),
+
+    path('user-contact/<username>/<relation>/', views.user_contact, name='user_contact')
 ]

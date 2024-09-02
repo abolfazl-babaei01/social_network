@@ -2,13 +2,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
+from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 
 # other
 from .models import SocialUser, Contact
 from .forms import CreateSocialUserForm, EditSocialUserForm
-from post.models import Post
+from post.models import Post, Comment
 
 
 # Create your views here.
@@ -112,5 +113,41 @@ def save_post(request):
                 saved = True
             return JsonResponse({'saved': saved})
         except Exception as e:
+            print(e)
             return JsonResponse({'error': 'Post not found'})
     return JsonResponse({'Bad request': 'Post not found'})
+
+
+@require_POST
+def add_comment(request):
+    post_id = request.POST.get('post_id')
+    parent_id = request.POST.get('parent_id')
+    comment_text = request.POST.get('comment_text')
+    if comment_text:
+        try:
+            new_comment = Comment(post_id=post_id, author_id=request.user.id, parent_id=parent_id, text=comment_text)
+            new_comment.save()
+            comments = (Comment.objects.filter(is_published=True, post_id=post_id, parent=None)
+                        .prefetch_related('sub_comments')).order_by('-created')
+            comments_count = comments.count()
+            context = {'comments_count': comments_count, 'comments': comments}
+            rendered_html = render_to_string('partials/post_comment_partial.html', context, request=request)
+            return JsonResponse({'html': rendered_html})
+        except Exception as e:
+            print(e)
+    else:
+        return JsonResponse({'error': 'Comment text required'})
+    return JsonResponse({'error': 'Post not found'})
+
+
+def user_contact(request, username, relation):
+    user = get_object_or_404(SocialUser, username=username, is_active=True)
+    if relation == 'followers':
+        users = user.get_followers()
+    elif relation == 'following':
+        users = user.get_followings()
+    else:
+        raise Http404('Invalid relation')
+    context = {'users': users, 'relation': relation, 'user': user}
+    return render(request, 'account/user_contact.html', context)
+

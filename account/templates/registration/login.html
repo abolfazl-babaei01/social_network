@@ -5,10 +5,13 @@
 {% endblock %}
 
 {% block content %}
+    <div class="form-container">
     <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Login</button>
     </form>
     <p><a href="{% url 'account:password_reset' %}">Forgot password</a></p>
+    <p><a href="{% url 'account:register' %}">Create account</a></p>
+    </div>
 {% endblock %}

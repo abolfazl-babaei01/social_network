@@ -2,6 +2,7 @@ from django.db import models
 from account.models import SocialUser
 from taggit.managers import TaggableManager
 
+
 # Create your models here.
 
 
@@ -17,7 +18,7 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"post by{self.author} - {self.id}"
+        return f"post by {self.author} - {self.id}"
 
     class Meta:
         ordering = ['-created_at']
@@ -31,3 +32,20 @@ class Image(models.Model):
     file = models.ImageField(upload_to='images/posts/')
     created_at = models.DateTimeField(auto_now_add=True)
 
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(SocialUser, on_delete=models.CASCADE, related_name='comments')
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, related_name='sub_comments', null=True, blank=True)
+    text = models.TextField(max_length=300)
+    created = models.DateTimeField(auto_now_add=True)
+    is_published = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"Comment by {self.author} - {self.post}"
+
+    class Meta:
+        ordering = ['-created']
+        indexes = [
+            models.Index(fields=['-created'])
+        ]

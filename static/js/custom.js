@@ -27,7 +27,7 @@ $(document).ready(function () {
 
     });
     // this function for like post
-    $(document).on('click', '.like-post', function() {
+    $(document).on('click', '.like-post', function () {
         const $this = $(this);
         const postId = $(this).data('post-id');
         const csrfToken = $(this).data('csrf-token');
@@ -47,27 +47,57 @@ $(document).ready(function () {
         })
     });
 
-    $(document).on('click', '.save-post', function() {
+    $(document).on('click', '.save-post', function () {
         const $this = $(this);
         const postId = $(this).data('post-id');
         const csrfToken = $(this).data('csrf-token');
 
         $.ajax({
             type: 'POST',
-            url : '/account/save-post/',
+            url: '/account/save-post/',
             data: {'csrfmiddlewaretoken': csrfToken, 'post_id': postId},
-            success: function (response){
+            success: function (response) {
                 const icon = $this.find('svg');
-                console.log(icon)
-                if (response.saved){
-                    icon.removeClass('fa').addClass('fa-calendar-week');
-                }else {
-                    icon.removeClass('fa').addClass('fa-calendar-plus');
+                if (response.saved) {
+                    icon.removeClass('far').addClass('fas fa-bookmark');
+                    $.notify('saved post!', 'success')
+                } else {
+                    icon.removeClass('fas').addClass('far fa-bookmark');
+                    $.notify('un saved post!', 'error')
                 }
             }
         })
+    });
+
+    $(document).on('click', '.send-comment', function (e) {
+        e.preventDefault()
+        const commentText = $('#comment-text').val();
+        const parentId = $('.parent-id').val();
+        const postId = $(this).data('post-id');
+        const csrfToken = $(this).data('csrf-token');
+        $.ajax({
+            type: 'POST',
+            url: '/account/add-comment/',
+            data: {
+                'post_id': postId,
+                'comment_text': commentText,
+                'parent_id': parentId,
+                'csrfmiddlewaretoken': csrfToken
+            },
+            success: function (data) {
+
+                $('#comment').html(data.html)
+                $('#comment-text').val('');
+                $('.parent-id').val('');
+            },
+        })
     })
-})
+});
+
+function addParentId(parentId) {
+    $('.parent-id').val(parentId);
+    $.notify('activate reply', 'info')
+}
 
 function showPostDetail(postId) {
     fetch(`/post/${postId}/`)
@@ -83,9 +113,10 @@ function closeModal() {
 }
 
 
-window.onclick = function(event) {
+window.onclick = function (event) {
     let modal = document.getElementById('postModal');
     if (event.target === modal) {
         modal.style.display = "none";
     }
 };
+
