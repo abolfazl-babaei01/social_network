@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post, Comment
+from .models import Post, Comment, Image
 from account.models import SocialUser
 from django.contrib.auth.decorators import login_required
+from .forms import CreatePostForm, ImageForm
+from django.forms import modelformset_factory
 
 
 # Create your views here.
@@ -35,3 +37,41 @@ def post_detail(request, post_id):
     comments = Comment.objects.filter(post_id=post.id, parent=None, is_published=True).prefetch_related(
         'sub_comments').order_by('-created')
     return render(request, 'post/post_detail.html', {'post': post, 'comments': comments})
+
+
+# def create_post(request):
+#     if request.method == 'POST':
+#         form = CreatePostForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             post = form.save(commit=False)
+#             post.author = request.user
+#             post.save()
+#             form.save_m2m()
+#             Image.objects.create(post=post, file=form.cleaned_data['image'])
+#             return redirect('account:profile')
+#     else:
+#         form = CreatePostForm()
+#     return render(request, 'post/create_post.html', {'form': form})
+
+def create_post(request):
+    ImageFormSet = modelformset_factory(Image, form=ImageForm, extra=1, max_num=10)
+
+    if request.method == 'POST':
+        post_form = CreatePostForm(request.POST)
+        formset = ImageFormSet(request.POST, request.FILES, queryset=Image.objects.none())
+
+        if post_form.is_valid() and formset.is_valid():
+            post = post_form.save(commit=False)
+            post.author = request.user
+            post.save()
+            post_form.save_m2m()
+            for form in formset.cleaned_data:
+                if form:
+                    image = form['file']
+                    Image.objects.create(post=post, file=image)
+            return redirect('account:profile')
+    else:
+        post_form = CreatePostForm()
+        formset = ImageFormSet(queryset=Image.objects.none())
+
+    return render(request, 'post/create_post.html', {'post_form': post_form, 'formset': formset})

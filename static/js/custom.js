@@ -104,6 +104,9 @@ function showPostDetail(postId) {
         .then(response => response.text())
         .then(data => {
             document.getElementById('modal-body').innerHTML = data;
+            var deleteLink = document.getElementById("delete-post-link");
+
+            deleteLink.href = '/account/delete-post/' + postId
             document.getElementById('postModal').style.display = 'block';
         });
 }
@@ -119,4 +122,21 @@ window.onclick = function (event) {
         modal.style.display = "none";
     }
 };
+
+
+document.getElementById('add-more').addEventListener('click', function() {
+    let formsetDiv = document.getElementById('image-formset');
+    let totalForms = document.getElementById('id_form-TOTAL_FORMS');
+    let currentForms = parseInt(totalForms.value);
+    let maxForms = 10;
+    if (currentForms < maxForms) {
+        let newForm = formsetDiv.querySelector('.form-row').cloneNode(true);
+        let formRegex = new RegExp(`form-(\\d){1}-`, 'g');
+        newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${currentForms}-`);
+        formsetDiv.appendChild(newForm);
+        totalForms.value = currentForms + 1;
+    } else {
+        $.notify("You can only add up to 10 images.", "error");
+    }
+});
 

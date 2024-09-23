@@ -34,20 +34,30 @@
                 </div>
             </div>
         </div>
+    
         <div class="user-posts">
             {% for post in user.posts.all %}
                 <div class="user-post">
                     <img src="{{ post.images.first.file.url }}" alt="" onclick="showPostDetail('{{ post.id }}')">
                 </div>
+                
             {% endfor %}
         </div>
     </div>
     <div id="postModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
+            <span class="trash">
+                <p style="display: none" id="delete-post-url">{% url 'account:delete_post' post_id=0 %}</p>
+                <a href="#" id="delete-post-link">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </span>
+            
             <div id="modal-body">
                 <!-- Post details will be loaded here -->
             </div>
         </div>
     </div>
+    
 {% endblock %}

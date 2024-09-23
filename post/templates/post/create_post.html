@@ -1,0 +1,26 @@
+{% extends 'parent/base.html' %}
+
+{% block title %}
+	Create Post
+{% endblock %}
+
+{% block content %}
+<form method="POST" enctype="multipart/form-data" class="custom-form">
+    {% csrf_token %}
+    <div class="post-form">
+        {{ post_form.as_p }}
+    </div>
+    <div id="image-formset" class="image-formset">
+        {{ formset.management_form }}
+        {% for form in formset %}
+            <div class="form-row image-row">
+                {{ form.file.label_tag }} 
+                {{ form.file }}
+            </div>
+        {% endfor %}
+    </div>
+    <button type="button" id="add-more" class="btn btn-add-more">Add more images</button>
+    <button type="submit" class="btn btn-submit">Submit</button>
+</form>
+
+{% endblock %}

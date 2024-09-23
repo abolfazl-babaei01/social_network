@@ -433,9 +433,23 @@ hr {
     font-weight: bold;
 }
 
+.modal-content .trash svg {
+    margin: -23px -0px 0 0;
+    color: #aaa;
+    float: right;
+    font-size: 18px;
+    font-weight: bold;
+}
+
 .close:hover,
 .close:focus {
     color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-content .trash svg:hover{
+        color: red;
     text-decoration: none;
     cursor: pointer;
 }
@@ -445,81 +459,80 @@ hr {
 /* start comment style */
 
 
-
 .comment-section {
-  width: 93%;
-  max-width: 500px;
-  margin: 0 auto;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 93%;
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .comment-box {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 .comment-box textarea {
-  width: 100%;
-  height: 50px;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  padding: 10px;
-  resize: none;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s;
+    width: 100%;
+    height: 50px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 10px;
+    resize: none;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
 }
 
 .comment-box textarea:focus {
-  border-color: #0095f6;
+    border-color: #0095f6;
 }
 
 .btn-post {
-  background-color: #0095f6;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 20px;
-  margin-left: 10px;
-  cursor: pointer;
-  transition: background-color 0.2s;
+    background-color: #0095f6;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
 
 .btn-post:hover {
-  background-color: #007bb5;
+    background-color: #007bb5;
 }
 
 .btn-post i {
-  font-size: 16px; /* تنظیم اندازه آیکون */
+    font-size: 16px; /* تنظیم اندازه آیکون */
 }
 
 .comment {
-  margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .comment p {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.5;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
 }
 
 .btn-reply {
-  background-color: transparent;
-  border: none;
-  color: #0095f6;
-  cursor: pointer;
-  padding: 0;
-  font-size: 14px;
-  margin-top: 5px;
+    background-color: transparent;
+    border: none;
+    color: #0095f6;
+    cursor: pointer;
+    padding: 0;
+    font-size: 14px;
+    margin-top: 5px;
 }
 
 .btn-reply:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
 .sub-comments {
@@ -531,3 +544,94 @@ hr {
 }
 
 /* end comment style */
+
+
+/* start create post style*/
+
+.custom-form {
+    width: 50%;
+    margin: 20px auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+}
+
+.post-form {
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.form-row label {
+    flex: 1;
+    font-weight: bold;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.form-row input[type="file"] {
+    flex: 2;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    background-color: #fff;
+}
+
+.image-formset {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.image-row {
+    border: 1px dashed #ccc;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+    margin-bottom: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-add-more {
+    background-color: #4CAF50;
+    color: #fff;
+    margin-right: 10px;
+}
+
+.btn-submit {
+    background-color: #007BFF;
+    color: #fff;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.btn-add-more:hover {
+    background-color: #45a049;
+}
+
+.btn-submit:hover {
+    background-color: #0056b3;
+}
+
+/* افکت Hover برای فرم فایل */
+.form-row input[type="file"]:hover {
+    border-color: #007BFF;
+}
+
+/* end create post style*/

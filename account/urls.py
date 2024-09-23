@@ -25,6 +25,7 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('profile/setting/', views.setting, name='setting'),
     path('profile/edit/', views.edit_profile, name='edit_profile'),
+    path('delete-post/<int:post_id>', views.delete_post, name='delete_post'),
 
     # user actions
     path('follow-user/', views.follow_user, name='follow_user'),

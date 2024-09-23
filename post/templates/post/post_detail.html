@@ -36,29 +36,29 @@
 {# comment division #}
 <div class="comment-area">
     <div class="comment-section">
-  <div class="comment-box">
-    <textarea id="comment-text" placeholder="Add a comment..."></textarea>
-      <input type="hidden" class="parent-id" value="">
-    <button class="btn-post send-comment" data-post-id="{{ post.id }}" data-csrf-token="{{ csrf_token }}">
-      <i class="fas fa-paper-plane"></i>
-    </button>
-  </div>
+        <div class="comment-box">
+            <textarea id="comment-text" placeholder="Add a comment..."></textarea>
+            <input type="hidden" class="parent-id" value="">
+            <button class="btn-post send-comment" data-post-id="{{ post.id }}" data-csrf-token="{{ csrf_token }}">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
 
-  <div id="comment">
-      {% for comment in comments %}
-      	<p><strong>{{ comment.author }}:</strong>  {{ comment.text }}</p>
-          <button class="btn-reply" onclick="addParentId('{{ comment.id }}')">Reply</button>
-          
-          {% for sub_comment in comment.sub_comments.all %}
-          	<div class="sub-comments">
-            <span>reply to {{ sub_comment.parent.author }}</span>
-                <p><strong>{{ sub_comment.author }}:</strong>{{ sub_comment.text }}</p>
-            
-            </div>
-          {% endfor %}
-          <hr>
-      {% endfor %}
-  </div>
-</div>
+        <div id="comment">
+            {% for comment in comments %}
+                <p><strong>{{ comment.author }}:</strong> {{ comment.text }}</p>
+                <button class="btn-reply" onclick="addParentId('{{ comment.id }}')">Reply</button>
+
+                {% for sub_comment in comment.sub_comments.all %}
+                    <div class="sub-comments">
+                        <span>reply to {{ sub_comment.parent.author }}</span>
+                        <p><strong>{{ sub_comment.author }}:</strong>{{ sub_comment.text }}</p>
+
+                    </div>
+                {% endfor %}
+                <hr>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 

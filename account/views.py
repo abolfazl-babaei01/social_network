@@ -151,3 +151,9 @@ def user_contact(request, username, relation):
     context = {'users': users, 'relation': relation, 'user': user}
     return render(request, 'account/user_contact.html', context)
 
+
+def delete_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id, is_published=True)
+    if post.author == request.user:
+        post.delete()
+        return redirect('account:profile')
