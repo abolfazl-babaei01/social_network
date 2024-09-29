@@ -1,0 +1,36 @@
+{% extends 'parent/base.html' %}
+
+{% block title %}
+    saved posts ({{ user }})
+{% endblock %}
+
+{% block content %}
+    {% if user.saves.all %}
+          <h2 class="title">Your Saved Posts</h2>
+        <div class="user-posts-ex">
+            {% for post in user.saves.all %}
+                <div class="user-post-ex">
+                    <img src="{{ post.images.first.file.url }}" alt="" onclick="showPostDetail('{{ post.id }}')">
+                </div>
+            {% endfor %}
+        </div>
+
+        <div id="postModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <div id="modal-body">
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="save-and-like-placeholder">
+            <div class="no-saved-and-like-posts">
+                <i class="fas fa-plus-circle plus-icon"></i>
+                <p>No saved posts yet!</p>
+                <a href="{% url 'post:explore' %}" class="go-to-posts-btn">View Posts</a>
+            </div>
+        </div>
+    {% endif %}
+
+
+{% endblock %}

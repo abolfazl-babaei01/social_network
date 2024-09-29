@@ -157,3 +157,15 @@ def delete_post(request, post_id):
     if post.author == request.user:
         post.delete()
         return redirect('account:profile')
+
+
+def liked_posts(request):
+    user = get_object_or_404(SocialUser, id=request.user.id)
+    context = {'user': user}
+    return render(request, 'account/liked_posts.html', context)
+
+
+def saved_posts(request):
+    user = get_object_or_404(SocialUser, id=request.user.id)
+    context = {'user': user}
+    return render(request, 'account/saved_posts.html', context)

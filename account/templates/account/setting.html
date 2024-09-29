@@ -6,35 +6,55 @@
 
 {% block content %}
 
-    <div class="setting-container">
-
+<div class="layout-container">
+    <!-- منوی سمت چپ -->
+    <div class="sidebar">
         <div class="user-options">
             <p><a href="{% url 'account:password_change' %}">Change Password</a></p>
             <p><a href="{% url 'account:password_reset' %}">Forgot Password</a></p>
-
-            <p><a href="">Delete Account</a></p>
-
-            <p><a href="">Contact Support</a></p>
-
-            <p><a href="">Suggestions</a></p>
+            <p><a href="#">Delete Account</a></p>
+            <p><a href="#">Contact Support</a></p>
+            <p><a href="#">Suggestions</a></p>
             <form method="post" action="{% url 'account:logout' %}">
                 {% csrf_token %}
-                <button type="submit">logout</button>
+                <button type="submit">Logout</button>
             </form>
         </div>
+    </div>
 
-        <div class="saves">
+    <!-- داشبورد کاربر -->
+    <div class="dashboard-container">
+        <div class="dashboard-grid">
+            <!-- پست‌های لایک‌شده -->
+            <div class="dashboard-option">
+                <i class="fas fa-heart icon"></i>
+                <h3>Liked Posts</h3>
+                <a href="{% url 'account:liked_posts' %}">View Liked Posts</a>
+            </div>
 
-            <p>{{ user }} save posts</p>
+            <!-- پست‌های ذخیره‌شده -->
+            <div class="dashboard-option">
+                <i class="fas fa-bookmark icon"></i>
+                <h3>Saved Posts</h3>
+                <a href="{% url 'account:saved_posts' %}">View Saved Posts</a>
+            </div>
 
-            <hr>
+            <!-- آمار پیج -->
+            <div class="dashboard-option">
+                <i class="fas fa-chart-line icon"></i>
+                <h3>Page Stats</h3>
+                <a href="#">View Stats</a>
+            </div>
+
+            <!-- ارتباط با پشتیبانی -->
+            <div class="dashboard-option">
+                <i class="fas fa-headset icon"></i>
+                <h3>Contact Support</h3>
+                <a href="#">Get Help</a>
+            </div>
         </div>
-
     </div>
+</div>
 
-    <div class="likes">
-        
-            <p> Recently liked</p>
-        
-    </div>
+
 {% endblock %}

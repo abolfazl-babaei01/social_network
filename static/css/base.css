@@ -2,7 +2,7 @@ body {
     font-family: "Segoe UI", system-ui, sans-serif;
     margin: 20px;
     padding: 20px;
-    /*background-color: ;*/
+    /*background-color: black;*/
 }
 
 
@@ -131,6 +131,11 @@ svg {
     border-bottom: 1px solid #dbdbdb;
 }
 
+.post-header a {
+    text-decoration: none;
+    color: black;
+}
+
 .avatar {
     width: 40px;
     height: 40px;
@@ -178,15 +183,18 @@ hr {
     margin: 0;
 }
 
-.like-post {
+.post-action {
+    display: flex;
+    justify-content: space-between;
+}
 
+.like-post {
     cursor: pointer;
     display: inline;
 }
 
 .save-post {
     display: inline;
-    margin: 200px;
     cursor: pointer;
 }
 
@@ -264,6 +272,11 @@ hr {
     height: 200px;
     border-radius: 3px;
     object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.user-post-ex:hover img {
+    transform: scale(1.1);
 }
 
 /*end explore style*/
@@ -362,8 +375,9 @@ hr {
 }
 
 .user-post img {
-    width: 100%;
-    border-radius: 8px;
+    width: 200px;
+    height: 200px;
+    border-radius: 3px;
     object-fit: cover;
 }
 
@@ -397,7 +411,8 @@ hr {
 
 /* end user page and profile style*/
 
-/* The Modal (background) */
+/* -- start modal --  */
+
 .modal {
     display: none;
     position: fixed;
@@ -412,8 +427,7 @@ hr {
     padding-top: 60px;
 }
 
-/* -- start modal --  */
-/* Modal Content */
+
 .modal-content {
     background-color: #fefefe;
     margin: -2% auto;
@@ -422,9 +436,20 @@ hr {
     width: 80%;
     max-width: 500px;
     border-radius: 10px;
+    animation: modalFadeIn 0.5s ease;
 }
 
-/* Close Button */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .close {
     margin: -36px -24px 0 0;
     color: #aaa;
@@ -448,8 +473,8 @@ hr {
     cursor: pointer;
 }
 
-.modal-content .trash svg:hover{
-        color: red;
+.modal-content .trash svg:hover {
+    color: red;
     text-decoration: none;
     cursor: pointer;
 }
@@ -477,6 +502,7 @@ hr {
 }
 
 .comment-box textarea {
+    font-family: "Segoe UI", system-ui, sans-serif;
     width: 100%;
     height: 50px;
     border: 1px solid #ddd;
@@ -635,3 +661,132 @@ hr {
 }
 
 /* end create post style*/
+
+/* start setting style*/
+.layout-container {
+    display: flex;
+    width: 100%;
+}
+
+.sidebar {
+    width: 17%;
+    background-color: #0657af;
+    color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    position: fixed;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.sidebar p, .sidebar a, .sidebar button {
+    color: #fff;
+    text-decoration: none;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.sidebar button {
+    background-color: #e81024;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.7s;
+}
+
+.sidebar button:hover {
+    background-color: #ff0000;
+    box-shadow: 0 0 10px red;
+}
+
+
+.dashboard-container {
+    width: 80%;
+    margin-left: 20%;
+    padding: 40px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+}
+
+
+.dashboard-option {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    /*transition: transform 0.3s;*/
+    transition: all 0.3s;
+}
+
+.dashboard-option:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 3px 8px black;
+}
+
+.dashboard-option .icon {
+    font-size: 40px;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.dashboard-option h3 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.dashboard-option a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.dashboard-option a:hover {
+    text-decoration: underline;
+}
+
+/* end setting style*/
+
+
+/* start saved and liked posts style */
+.save-and-like-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.no-saved-and-like-posts {
+    text-align: center;
+}
+
+.plus-icon {
+    font-size: 50px;
+    color: #3498db;
+    cursor: pointer;
+}
+
+.go-to-posts-btn {
+    display: block;
+    margin-top: 10px;
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.go-to-posts-btn:hover {
+    background-color: #2980b9;
+}
+
+/* end saved and liked posts style */

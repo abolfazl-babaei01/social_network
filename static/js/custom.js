@@ -46,7 +46,7 @@ $(document).ready(function () {
             }
         })
     });
-
+    // this function for save post
     $(document).on('click', '.save-post', function () {
         const $this = $(this);
         const postId = $(this).data('post-id');
@@ -69,11 +69,13 @@ $(document).ready(function () {
         })
     });
 
+
     $(document).on('click', '.send-comment', function (e) {
         e.preventDefault()
-        const commentText = $('#comment-text').val();
-        const parentId = $('.parent-id').val();
         const postId = $(this).data('post-id');
+        const commentText = $('#comment-text-' + postId).val();
+        const parentId = $('#parent-id-' + postId).val();
+
         const csrfToken = $(this).data('csrf-token');
         $.ajax({
             type: 'POST',
@@ -86,18 +88,19 @@ $(document).ready(function () {
             },
             success: function (data) {
 
-                $('#comment').html(data.html)
-                $('#comment-text').val('');
-                $('.parent-id').val('');
+                $('#comment-' + postId).html(data.html)
+                $('#comment-text-' + postId).val('');
+                $('#parent-id-' + postId).val('');
             },
         })
     })
 });
 
-function addParentId(parentId) {
-    $('.parent-id').val(parentId);
-    $.notify('activate reply', 'info')
+function addParentId(parentId, postId) {
+    $('#parent-id-' + postId).val(parentId);
+    $.notify('reply to comment was activated', 'success')
 }
+
 
 function showPostDetail(postId) {
     fetch(`/post/${postId}/`)
@@ -105,8 +108,10 @@ function showPostDetail(postId) {
         .then(data => {
             document.getElementById('modal-body').innerHTML = data;
             var deleteLink = document.getElementById("delete-post-link");
+            if (deleteLink) {
+                deleteLink.href = '/account/delete-post/' + postId
+            }
 
-            deleteLink.href = '/account/delete-post/' + postId
             document.getElementById('postModal').style.display = 'block';
         });
 }
@@ -124,7 +129,7 @@ window.onclick = function (event) {
 };
 
 
-document.getElementById('add-more').addEventListener('click', function() {
+document.getElementById('add-more').addEventListener('click', function () {
     let formsetDiv = document.getElementById('image-formset');
     let totalForms = document.getElementById('id_form-TOTAL_FORMS');
     let currentForms = parseInt(totalForms.value);

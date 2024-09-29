@@ -1,8 +1,8 @@
 
-  <div class="comment">
+  <div id="comment-{{ post.id }}">
       {% for comment in comments %}
           <p><strong>{{ comment.author }}:</strong>  {{ comment.text }}</p>
-          <button class="btn-reply" onclick="addParentId('{{ comment.id }}')">Reply</button>
+          <button class="btn-reply" onclick="addParentId('{{ comment.id }}', '{{ comment.post.id }}')">Reply</button>
 
           {% for sub_comment in comment.sub_comments.all %}
               <div class="sub-comments">
@@ -13,4 +13,3 @@
           <hr>
       {% endfor %}
   </div>
-

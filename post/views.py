@@ -12,9 +12,14 @@ def home(request):
     user = get_object_or_404(SocialUser, id=request.user.id)
     following_user = user.following.all()
     posts = Post.objects.exclude(author_id=request.user.id).filter(author__in=following_user, is_published=True)
+    for post in posts:
+        post.this_comments = Comment.objects.filter(post=post, parent=None, is_published=True).prefetch_related(
+            'sub_comments').order_by('-created')
+
     return render(request, 'post/home.html', {'posts': posts})
 
 
+@login_required
 def explore(request):
     users = SocialUser.objects.exclude(id=request.user.id).filter(is_active=True)
     pop_posts = Post.objects.filter(total_likes__gte=1).order_by('-total_likes')
@@ -25,6 +30,7 @@ def explore(request):
     return render(request, 'post/explore.html', context)
 
 
+@login_required
 def user_page(request, username):
     user = get_object_or_404(SocialUser, username=username, is_active=True)
     if request.user == user:
@@ -32,6 +38,7 @@ def user_page(request, username):
     return render(request, 'user/user_page.html', {'user': user})
 
 
+@login_required
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     comments = Comment.objects.filter(post_id=post.id, parent=None, is_published=True).prefetch_related(
@@ -39,20 +46,7 @@ def post_detail(request, post_id):
     return render(request, 'post/post_detail.html', {'post': post, 'comments': comments})
 
 
-# def create_post(request):
-#     if request.method == 'POST':
-#         form = CreatePostForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             post = form.save(commit=False)
-#             post.author = request.user
-#             post.save()
-#             form.save_m2m()
-#             Image.objects.create(post=post, file=form.cleaned_data['image'])
-#             return redirect('account:profile')
-#     else:
-#         form = CreatePostForm()
-#     return render(request, 'post/create_post.html', {'form': form})
-
+@login_required
 def create_post(request):
     ImageFormSet = modelformset_factory(Image, form=ImageForm, extra=1, max_num=10)
 

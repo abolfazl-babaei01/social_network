@@ -1,0 +1,27 @@
+<div class="comment-area" id="comment-area-{{ post.id }}">
+    <div class="comment-section">
+        <div class="comment-box">
+            <textarea id="comment-text-{{ post.id }}" placeholder="Add a comment..."></textarea>
+            <input type="hidden" id="parent-id-{{ post.id }}" value="">
+            <button class="btn-post send-comment" data-post-id="{{ post.id }}" data-csrf-token="{{ csrf_token }}">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+
+        <div id="comment-{{ post.id }}">
+            {% for comment in comments %}
+                <p><strong>{{ comment.author }}:</strong> {{ comment.text }}</p>
+                <button class="btn-reply" onclick="addParentId('{{ comment.id }}', '{{ post.id }}')">Reply</button>
+
+                {% for sub_comment in comment.sub_comments.all %}
+                    <div class="sub-comments">
+                        <span>reply to {{ sub_comment.parent.author }}</span>
+                        <p><strong>{{ sub_comment.author }}:</strong>{{ sub_comment.text }}</p>
+
+                    </div>
+                {% endfor %}
+                <hr>
+            {% endfor %}
+        </div>
+    </div>
+</div>

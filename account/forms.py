@@ -16,6 +16,13 @@ class CreateSocialUserForm(forms.ModelForm):
             raise forms.ValidationError('This email already exists')
         return email
 
+    def clean_phone(self):
+        phone = self.cleaned_data.get('phone')
+
+        if SocialUser.objects.exclude(id=self.instance.id).filter(phone=phone).exists():
+            raise forms.ValidationError('This phone already exists')
+        return phone
+
 
 class EditSocialUserForm(forms.ModelForm):
     class Meta:

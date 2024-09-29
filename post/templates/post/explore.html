@@ -13,7 +13,7 @@
                 {% if user.avatar %}
                     <img src="{{ user.avatar.url }}" alt="User Avatar">
                 {% else %}
-                    <img src="{% static 'images/defualt-profile.jpg' %}" alt="User Avatar">
+                    <img src="{% static 'images/default-profile.jpg' %}" alt="User Avatar">
                 {% endif %}
                 <p><b><a href="{% url 'post:user_page' username=user.username %}">{{ user.username }}</a></b></p>
                 <pre>{{ user.get_full_name }}</pre>

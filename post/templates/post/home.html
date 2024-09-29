@@ -13,7 +13,7 @@
             <div class="post">
                 <div class="post-header">
                     <img src="{{ post.author.avatar.url }}" alt="avatar" class="avatar">
-                    <p>{{ post.author.username }}</p>
+                    <p><a href="{% url 'post:user_page' username=post.author.username %}">{{ post.author.username }}</a></p>
                 </div>
                 <div class="post-images">
                     {% if post.images.count > 1 %}
@@ -28,10 +28,10 @@
                 </div>
                 <div class="post-body">
                     <p>{{ post.author.username }}: {{ post.description }}</p>
-                    <p class="like-post" data-post-id="{{ post.id }}" data-csrf-token="{{ csrf_token }}">
+                    <span class="like-post" data-post-id="{{ post.id }}" data-csrf-token="{{ csrf_token }}">
                         <i class=" {% if request.user in post.likes.all %} fa-solid{% else %} fa-regular {% endif %} fa-heart"></i>
                         <span class="like-count">{{ post.likes.count }}</span> Likes
-                    </p>
+                    </span>
                     <span class="save-post" data-post-id="{{ post.id }}" data-csrf-token="{{ csrf_token }}">
 
                     <i class="{% if request.user in post.save_by.all %}fas fa-bookmark{% else %}far fa-bookmark{% endif %}"></i>
@@ -44,19 +44,7 @@
                     </p>
 
                 </div>
-<div class="comment-section">
-  <div class="comment-box">
-    <textarea placeholder="Add a comment..."></textarea>
-    <button class="btn-post">
-      <i class="fas fa-paper-plane"></i>
-    </button>
-  </div>
-
-  <div class="comment">
-    <p><strong>User123</strong> This is a sample comment.</p>
-    <button class="btn-reply">Reply</button>
-  </div>
-</div>
+                {% include 'partials/comment_section.html' with comments=post.this_comments %}
             </div>
 
             <hr>
