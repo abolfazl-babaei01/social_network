@@ -1,0 +1,6 @@
+
+    {% for post in posts %}
+        <div class="user-post-ex">
+            <img src="{{ post.images.first.file.url }}" alt="" onclick="showPostDetail('{{ post.id }}')">
+        </div>
+    {% endfor %}

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import SocialUser, Contact
+from .models import *
 from django.contrib.auth.admin import UserAdmin
 
 
@@ -17,3 +17,9 @@ class SocialUserAdmin(admin.ModelAdmin):
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
     list_display = ['user_from', 'user_to',]
+
+
+@admin.register(Story)
+class StoryAdmin(admin.ModelAdmin):
+    list_display = ['user', 'created_at', 'is_expired']
+    list_filter = ['user']

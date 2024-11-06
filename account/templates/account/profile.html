@@ -34,6 +34,11 @@
                 </div>
             </div>
         </div>
+    <div>
+        <pre>{{ user.job }}</pre>
+        <p>{{ user.bio }}</p>
+
+    </div>
     
         <div class="user-posts">
             {% for post in user.posts.all %}

@@ -5,10 +5,11 @@ from django.contrib.auth import login
 from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse, Http404
+from pyexpat.errors import messages
 
 # other
 from .models import SocialUser, Contact
-from .forms import CreateSocialUserForm, EditSocialUserForm
+from .forms import *
 from post.models import Post, Comment
 
 
@@ -58,7 +59,6 @@ def edit_profile(request):
 @require_POST
 def follow_user(request):
     user_id = request.POST.get('user_id')
-
     if user_id:
         try:
             user = get_object_or_404(SocialUser, id=user_id, is_active=True)
@@ -66,6 +66,7 @@ def follow_user(request):
                 return JsonResponse({'follow_yourself': True})
             if request.user in user.followers.all():
                 Contact.objects.filter(user_from=request.user, user_to=user).delete()
+
                 followed = False
             else:
                 Contact.objects.create(user_from=request.user, user_to=user)
@@ -148,6 +149,7 @@ def user_contact(request, username, relation):
         users = user.get_followings()
     else:
         raise Http404('Invalid relation')
+    users = [request.user] + [u for u in users if u != request.user]
     context = {'users': users, 'relation': relation, 'user': user}
     return render(request, 'account/user_contact.html', context)
 
@@ -169,3 +171,9 @@ def saved_posts(request):
     user = get_object_or_404(SocialUser, id=request.user.id)
     context = {'user': user}
     return render(request, 'account/saved_posts.html', context)
+
+
+def notifications_page(request):
+    notif = Notification(request)
+    print(notif)
+    return render(request, 'account/notifications.html', {'notif': notif})

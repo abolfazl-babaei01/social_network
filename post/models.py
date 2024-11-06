@@ -1,3 +1,4 @@
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from account.models import SocialUser
 from taggit.managers import TaggableManager
@@ -29,7 +30,7 @@ class Post(models.Model):
 
 class Image(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='images')
-    file = models.ImageField(upload_to='images/posts/')
+    file = models.ImageField(upload_to='images/posts/', validators=[FileExtensionValidator(['png', 'jpg', 'jpeg'])])
     created_at = models.DateTimeField(auto_now_add=True)
 
 

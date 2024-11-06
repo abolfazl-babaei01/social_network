@@ -1,12 +1,16 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.db.models import Count, Q
+from django.utils import timezone
+from datetime import timedelta
 from .models import Post, Comment, Image
 from account.models import SocialUser
 from django.contrib.auth.decorators import login_required
 from .forms import CreatePostForm, ImageForm
 from django.forms import modelformset_factory
-
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 # Create your views here.
+
 @login_required
 def home(request):
     user = get_object_or_404(SocialUser, id=request.user.id)
@@ -21,11 +25,31 @@ def home(request):
 
 @login_required
 def explore(request):
-    users = SocialUser.objects.exclude(id=request.user.id).filter(is_active=True)
-    pop_posts = Post.objects.filter(total_likes__gte=1).order_by('-total_likes')
+    # users = SocialUser.objects.exclude(id=request.user.id).filter(is_active=True)
+    users = SocialUser.objects.exclude(id=request.user.id).exclude(
+        followers__id=request.user.id
+    ).annotate(
+        mutual_followers=Count('followers', filter=Q(followers__in=request.user.following.all()))
+    ).order_by('-mutual_followers')[:10]
+    posts = Post.objects.filter(is_published=True).annotate(
+        interaction_count=Count('comments') + Count('save_by') + Count('likes')).order_by('-interaction_count')
+
+    recent_posts = posts.filter(created_at__gte=timezone.now() - timedelta(days=1))
+    final_posts = posts | recent_posts
+    paginator = Paginator(final_posts, 12)
+    page_number = request.GET.get(key='page', default=1)
+    try:
+        final_posts = paginator.page(page_number)
+    except PageNotAnInteger:
+        final_posts = paginator.page(1)
+    except EmptyPage:
+        final_posts = []
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return render(request, 'post/post_list_ajax.html', {'posts': final_posts})
     context = {
         "users": users,
-        'pop_posts': pop_posts
+        'posts': final_posts
     }
     return render(request, 'post/explore.html', context)
 

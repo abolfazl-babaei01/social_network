@@ -14,8 +14,9 @@
         {{ formset.management_form }}
         {% for form in formset %}
             <div class="form-row image-row">
-                {{ form.file.label_tag }} 
+                {{ form.file.label_tag }}
                 {{ form.file }}
+
             </div>
         {% endfor %}
     </div>

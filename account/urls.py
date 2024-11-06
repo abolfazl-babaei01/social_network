@@ -35,5 +35,7 @@ urlpatterns = [
     path('save-post/', views.save_post, name='save_post'),
     path('add-comment/', views.add_comment, name='add_comment'),
 
-    path('user-contact/<username>/<relation>/', views.user_contact, name='user_contact')
+    path('user-contact/<username>/<relation>/', views.user_contact, name='user_contact'),
+
+    path('notifications-page/', views.notifications_page, name='notifications_page'),
 ]

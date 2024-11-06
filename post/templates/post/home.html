@@ -13,7 +13,8 @@
             <div class="post">
                 <div class="post-header">
                     <img src="{{ post.author.avatar.url }}" alt="avatar" class="avatar">
-                    <p><a href="{% url 'post:user_page' username=post.author.username %}">{{ post.author.username }}</a></p>
+                    <p><a href="{% url 'post:user_page' username=post.author.username %}">{{ post.author.username }}</a>
+                    </p>
                 </div>
                 <div class="post-images">
                     {% if post.images.count > 1 %}
@@ -28,15 +29,17 @@
                 </div>
                 <div class="post-body">
                     <p>{{ post.author.username }}: {{ post.description }}</p>
-                    <span class="like-post" data-post-id="{{ post.id }}" data-csrf-token="{{ csrf_token }}">
-                        <i class=" {% if request.user in post.likes.all %} fa-solid{% else %} fa-regular {% endif %} fa-heart"></i>
-                        <span class="like-count">{{ post.likes.count }}</span> Likes
-                    </span>
-                    <span class="save-post" data-post-id="{{ post.id }}" data-csrf-token="{{ csrf_token }}">
+                    <div class="post-action">
+                        <p class="like-post" data-post-id="{{ post.id }}" data-csrf-token="{{ csrf_token }}">
+                            <i class=" {% if request.user in post.likes.all %} fa-solid{% else %} fa-regular {% endif %} fa-heart"></i>
+                            <span class="like-count">{{ post.likes.count }}</span> Likes
+                        </p>
+                        <p class="save-post" data-post-id="{{ post.id }}" data-csrf-token="{{ csrf_token }}">
 
-                    <i class="{% if request.user in post.save_by.all %}fas fa-bookmark{% else %}far fa-bookmark{% endif %}"></i>
+                            <i class="{% if request.user in post.save_by.all %}fas fa-bookmark{% else %}far fa-bookmark{% endif %}"></i>
 
-                </span>
+                        </p>
+                    </div>
                     <p>Tags:
                         {% for tag in post.tags.all %}
                             #{{ tag.name }}

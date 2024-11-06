@@ -5,25 +5,35 @@
 {% endblock %}
 
 {% block content %}
-    {% if users %}
-    	<hr>
-    <h2 class="title">{{ user }} {{ relation }}</h2>
-        <div class="users-container">
-            {% for user in users %}
-                <div class="user-con">
-                    {% if user.avatar %}
-                        <img src="{{ user.avatar.url }}" alt="User Avatar">
-                    {% else %}
-                        <img src="{% static 'images/default-profile.jpg' %}" alt="User Avatar">
-                    {% endif %}
-                    <p><b><a href="{% url 'post:user_page' username=user.username %}">{{ user.username }}</a></b></p>
-                    <pre>{{ user.get_full_name }}</pre>
-                </div>
-            {% endfor %}
-        </div>
-        {% else %}
-        <p class="alert"> user {{ user }} not {{ relation }} </p>
-    {% endif %} 
 
+    <div class="follower-list">
+        {% for user in users %}
+            <div class="follower">
+            {% if user.avatar %}
+            	 <img src="{{ user.avatar.url }}" alt="Profile Picture" class="profile-pic">
+                {% else %}
+                  <img src="{% static 'images/default-profile.jpg' %}" alt="User Avatar" class="profile-pic">
+            {% endif %} 
+               
+                <div class="follower-info">
+                    <h4 class="username"><a href="{% url 'post:user_page' username=user.username %}">{{ user.username }}</a></h4>
+                    <p class="full-name">{{ user.get_full_name }}</p>
+                </div>
+                {% if user != request.user %}
+                	<button data-csrf-token="{{ csrf_token }}" id="follow-and-unfollow-{{ user.id }}" value="{{ user.id }}"
+                        class="follow-btn">
+                    {% if request.user in user.followers.all %}
+                        Un Follow
+                    {% else %}
+                        Follow
+                    {% endif %}
+                </button>
+                    
+                {% endif %} 
+            </div>
+        {% endfor %}
+    
+    </div>
+    
 
 {% endblock %}

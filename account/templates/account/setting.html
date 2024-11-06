@@ -14,7 +14,7 @@
             <p><a href="{% url 'account:password_reset' %}">Forgot Password</a></p>
             <p><a href="#">Delete Account</a></p>
             <p><a href="#">Contact Support</a></p>
-            <p><a href="#">Suggestions</a></p>
+            <p><a href="{% url 'account:notifications_page' %}">Notifications</a><span class="notif_count">{{ notification|length }}</span></p>
             <form method="post" action="{% url 'account:logout' %}">
                 {% csrf_token %}
                 <button type="submit">Logout</button>

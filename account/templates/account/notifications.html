@@ -1,0 +1,13 @@
+{% extends 'parent/base.html' %}
+
+{% block title %}
+    Notifications
+{% endblock %}
+{% block content %}
+    {% for item in notif %}
+    	
+        {{ item }}
+        <hr>
+    {% endfor %}
+    
+{% endblock %}

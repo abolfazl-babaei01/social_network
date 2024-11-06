@@ -17,25 +17,33 @@
                 {% endif %}
                 <p><b><a href="{% url 'post:user_page' username=user.username %}">{{ user.username }}</a></b></p>
                 <pre>{{ user.get_full_name }}</pre>
+            <button data-csrf-token="{{ csrf_token }}" id="follow-and-unfollow-{{ user.id }}" value="{{ user.id }}"
+                            class="follow-btn">
+                        {% if request.user in user.followers.all %}
+                            Un Follow
+                        {% else %}
+                            Follow
+                        {% endif %}
+                    </button>
             </div>
         {% endfor %}
     </div>
     <hr>
     <h2 class="title">Popular Posts</h2>
-    <div class="user-posts-ex">
-        {% for post in pop_posts %}
+    <div class="user-posts-ex" id="post-list">
+        {% for post in posts %}
             <div class="user-post-ex">
-                    <img src="{{ post.images.first.file.url }}" alt="" onclick="showPostDetail('{{ post.id }}')">
+                <img src="{{ post.images.first.file.url }}" alt="" onclick="showPostDetail('{{ post.id }}')">
             </div>
         {% endfor %}
     </div>
-    
-<div id="postModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <div id="modal-body">
-            <!-- Post details will be loaded here -->
+
+    <div id="postModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modal-body">
+                <!-- Post details will be loaded here -->
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}

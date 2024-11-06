@@ -1,6 +1,6 @@
 $(document).ready(function () {
     // this function for user follow and un follow
-    $('#follow-and-unfollow').on('click', function () {
+    $('[id^=follow-and-unfollow-]').on('click', function () {
         const button = $(this);
         const userId = button.val();
         const csrfToken = button.data('csrf-token');
@@ -11,10 +11,10 @@ $(document).ready(function () {
             data: {'csrfmiddlewaretoken': csrfToken, 'user_id': userId},
             success: function (response) {
                 if (response.followed) {
-                    $('#follow-and-unfollow').text('Un Follow');
+                    button.text('Un Follow');
 
                 } else {
-                    $('#follow-and-unfollow').text('Follow');
+                    button.text('Follow');
                 }
                 if (response.follow_yourself) {
                     alert('You cannot follow yourself!')
@@ -93,7 +93,39 @@ $(document).ready(function () {
                 $('#parent-id-' + postId).val('');
             },
         })
-    })
+    });
+
+
+//     this code for post list in explore
+    $(document).ready(function () {
+        let page = 2;
+        let urlPage = '/explore/'
+        let loading = false;  // برای جلوگیری از درخواست های همزمان
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() + $(window).height() >= $(document).height() -1 )  {
+                if (!loading) {
+                    loading = true;  // درحال بارگذاری
+
+                    $.ajax({
+                        type: 'GET',
+                        url: urlPage + "?page=" + page,
+                        dataType: 'html',
+                        success: function (data) {
+                            $('#post-list').append(data);
+                            page += 1;
+                            loading = false;  // بعد از بارگذاری، ریست شود
+                        },
+                        error: function () {
+                            loading = false;  // درصورت خطا نیز ریست شود
+                        }
+                    });
+                }
+            }
+        });
+    });
+
+
 });
 
 function addParentId(parentId, postId) {

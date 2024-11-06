@@ -23,7 +23,7 @@
                     <span><strong>{{ user.posts.count }}</strong> posts</span>
                     <span><strong id="followers-count">{{ user.followers.count }}</strong> <a
                             href="{% url 'account:user_contact' username=user.username relation='followers' %}">followers</a></span>
-                    <span><strong id="following-count">{{ user.following.count }}</strong> 
+                    <span><strong id="following-count">{{ user.following.count }}</strong>
                         <a href="{% url 'account:user_contact' username=user.username relation='following' %}">following</a>
                     </span>
 
@@ -33,7 +33,7 @@
                 <div class="user-actions">
 
 
-                    <button data-csrf-token="{{ csrf_token }}" id="follow-and-unfollow" value="{{ user.id }}"
+                    <button data-csrf-token="{{ csrf_token }}" id="follow-and-unfollow-{{ user.id }}" value="{{ user.id }}"
                             class="follow-btn">
                         {% if request.user in user.followers.all %}
                             Un Follow
@@ -48,6 +48,11 @@
                 </div>
             </div>
         </div>
+      <div>
+        <pre>{{ user.job }}</pre>
+        <p>{{ user.bio }}</p>
+
+    </div>
         <div class="user-posts">
             {% for post in user.posts.all %}
                 <div class="user-post">
@@ -55,7 +60,11 @@
                 </div>
             {% endfor %}
         </div>
+
     </div>
+
+
+
 
     <div id="postModal" class="modal">
         <div class="modal-content">

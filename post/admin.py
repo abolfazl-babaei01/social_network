@@ -13,6 +13,7 @@ class ImageInline(admin.StackedInline):
 class PostAdmin(admin.ModelAdmin):
     list_display = ['author', 'created_at', 'is_published']
     inlines = [ImageInline]
+    list_filter = ['author']
 
 
 @admin.register(Comment)
