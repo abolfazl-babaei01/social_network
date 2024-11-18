@@ -6,13 +6,15 @@
 
 {% block content %}
 
-    <div class="follower-list">
+    <div class="follower-list"> 
+        
         {% for user in users %}
-            <div class="follower">
+           
+            	<div class="follower">
             {% if user.avatar %}
-            	 <img src="{{ user.avatar.url }}" alt="Profile Picture" class="profile-pic">
+            	 <img src="{{ user.avatar.url }}" alt="Profile Picture" class="profile-pic-follower">
                 {% else %}
-                  <img src="{% static 'images/default-profile.jpg' %}" alt="User Avatar" class="profile-pic">
+                  <img src="{% static 'images/default-profile.jpg' %}" alt="User Avatar" class="profile-pic-follower">
             {% endif %} 
                
                 <div class="follower-info">
@@ -31,9 +33,9 @@
                     
                 {% endif %} 
             </div>
+            
+            
         {% endfor %}
-    
     </div>
     
-
 {% endblock %}

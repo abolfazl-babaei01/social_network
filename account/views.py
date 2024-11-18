@@ -11,7 +11,7 @@ from pyexpat.errors import messages
 from .models import SocialUser, Contact
 from .forms import *
 from post.models import Post, Comment
-
+from pprint import pprint
 
 # Create your views here.
 
@@ -150,6 +150,7 @@ def user_contact(request, username, relation):
     else:
         raise Http404('Invalid relation')
     users = [request.user] + [u for u in users if u != request.user]
+    pprint(users)
     context = {'users': users, 'relation': relation, 'user': user}
     return render(request, 'account/user_contact.html', context)
 
@@ -173,7 +174,5 @@ def saved_posts(request):
     return render(request, 'account/saved_posts.html', context)
 
 
-def notifications_page(request):
-    notif = Notification(request)
-    print(notif)
-    return render(request, 'account/notifications.html', {'notif': notif})
+def delete_account(request):
+    return render(request, 'account/delete_account.html', {})

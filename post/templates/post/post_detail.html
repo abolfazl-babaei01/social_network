@@ -1,8 +1,10 @@
 <div class="post">
-    <div class="post-header">
+    <a href="{% url 'post:user_page' username=post.author.username %}">
+        <div class="post-header">
         <img src="{{ post.author.avatar.url }}" alt="avatar" class="avatar">
         <p>{{ post.author.username }}</p>
     </div>
+    </a>
     <div class="post-images">
         {% if post.images.count > 1 %}
             <div class="slider">

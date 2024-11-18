@@ -38,13 +38,3 @@ class Contact(models.Model):
     def __str__(self):
         return f'{self.user_from} follows {self.user_to}'
 
-
-class Story(models.Model):
-    user = models.ForeignKey(SocialUser, on_delete=models.CASCADE, related_name='stories')
-    file = models.FileField(upload_to='video/stories/', validators=[FileExtensionValidator(['mp4', 'png', 'jpg', 'jpeg'])])
-    is_delete = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def is_expired(self):
-        expiration_time = self.created_at + timedelta(hours=24)
-        return timezone.now() > expiration_time

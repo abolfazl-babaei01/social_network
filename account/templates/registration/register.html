@@ -1,14 +1,16 @@
 {% extends 'parent/base.html' %}
 
 {% block title %}
-	register
+    register
 {% endblock %}
 
 {% block content %}
-    <form method="post">
-    {% csrf_token %}
-    <h2>Register Form</h2>
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-    </form>
+    <div class="form-container">
+        <form method="post">
+            {% csrf_token %}
+            <h2>Register Form</h2>
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+    </div>
 {% endblock %}

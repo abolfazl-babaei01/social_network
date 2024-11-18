@@ -1,0 +1,43 @@
+{% extends 'parent/base.html' %}
+
+{% block title %}
+	Delete Account
+{% endblock %}
+
+{% block content %}
+<div class="form-container-delete-account">
+<form action="" method="post" class="delete-account-form"> 
+        <h3>Why are you deactivating your account?</h3>
+        <div class="radio-group">
+            <input type="radio" id="option1" name="reason" value="I need a break">
+            <label for="option1">I need a break.</label>
+
+            <input type="radio" id="option2" name="reason" value="Too busy/too distracting.">
+            <label for="option2">Too busy/too distracting.</label>
+
+            <input type="radio" id="option3" name="reason" value="Can’t find people to follow.">
+            <label for="option3">Can’t find people to follow.</label>
+
+            <input type="radio" id="option4" name="reason" value="Too many ads.">
+            <label for="option4">Too many ads.</label>
+
+            <input type="radio" id="option5" name="reason" value="Privacy concerns.">
+            <label for="option5">Privacy concerns.</label>
+
+            <input type="radio" id="option6" name="reason" value="Created a second account.">
+            <label for="option6">Created a second account.</label>
+
+            <input type="radio" id="option7" name="reason" value="Trouble getting started.">
+            <label for="option7">Trouble getting started.</label>
+
+            <input type="radio" id="option8" name="reason" value="Want to remove something.">
+            <label for="option8">Want to remove something.</label>
+
+            <input type="radio" id="option9" name="reason" value="Something else.">
+            <label for="option9">Something else.</label>
+        </div>
+        <input type="submit" value="Submit">
+    </form>
+
+</div>
+{% endblock %}

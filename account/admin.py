@@ -8,6 +8,7 @@ from django.contrib.auth.admin import UserAdmin
 class SocialUserAdmin(admin.ModelAdmin):
     list_display = ['username', 'first_name', 'last_name', 'email', 'is_active']
     list_editable = ['is_active']
+    search_fields = ['username']
     fieldsets = UserAdmin.fieldsets + (
         (
             'Additional Info', {'fields': ('date_of_birth', 'avatar', 'job', 'bio', 'phone')}),
@@ -17,9 +18,3 @@ class SocialUserAdmin(admin.ModelAdmin):
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
     list_display = ['user_from', 'user_to',]
-
-
-@admin.register(Story)
-class StoryAdmin(admin.ModelAdmin):
-    list_display = ['user', 'created_at', 'is_expired']
-    list_filter = ['user']

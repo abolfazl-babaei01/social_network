@@ -1,0 +1,42 @@
+{% extends 'parent/base.html' %}
+
+{% block title %}
+    Create Story
+{% endblock %}
+
+{% block content %}
+    <div class="story-form-container">
+        <form method="post" enctype="multipart/form-data" class="story-form">
+            {% csrf_token %}
+
+            <h2 class="form-title">Add a New Story</h2>
+
+            <div class="form-group">
+                <label for="file-input">Upload Image or Video:</label>
+                <input required type="file" id="file-input" name="file" accept="image/*, video/*"
+                       onchange="previewFile()">
+            </div>
+            {% if form.errors %}
+                {% for field in form %}
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                            <p class="error">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+                {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                        <p class="error">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+
+            <div id="preview-container">
+                <!-- Preview will appear here -->
+            </div>
+
+            <button type="submit" class="submit-btn">Add Story</button>
+        </form>
+    </div>
+
+{% endblock %}

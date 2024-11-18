@@ -124,6 +124,12 @@ svg {
     overflow: hidden;
 }
 
+.post a {
+    text-decoration: none;
+    font-weight: 600;
+    color: #000000;
+}
+
 .post-header {
     display: flex;
     align-items: center;
@@ -412,7 +418,7 @@ hr {
 
 /* end user page and profile style*/
 
-/* -- start modal --  */
+/* -- start modal for post detail --  */
 
 .modal {
     display: none;
@@ -821,7 +827,7 @@ hr {
     border-bottom: none;
 }
 
-.profile-pic {
+.profile-pic-follower {
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -836,9 +842,10 @@ hr {
     margin: 0;
     font-size: 1.1em;
 }
+
 .username a {
-    color: black;
     text-decoration: none;
+    color: #000000;
 }
 
 .full-name {
@@ -860,3 +867,421 @@ hr {
 }
 
 /* end user contact follow/unfollow */
+
+/*start story */
+.stories-container {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 10px;
+}
+
+.story-item {
+    text-align: center;
+    display: inline-block;
+}
+
+.profile-circle {
+    width: 70px;
+    height: 70px;
+    border: 3px solid #f09433;
+    border-radius: 50%;
+    padding: 3px;
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.active-user {
+    position: relative;
+    display: inline-block;
+    width: 70px;
+    height: 70px;
+    border: 3px solid white;
+    border-radius: 50%;
+    padding: 3px;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+
+.active-user svg {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    font-size: 20px;
+    color: deepskyblue;
+    background-color: #ffffff;
+    border-radius: 50%;
+    padding: 2px;
+}
+
+.profile-pic {
+    margin: 1%;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid white;
+    object-fit: cover;
+}
+
+
+/*end story */
+/* start story modal */
+#storyModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    /*overflow: hidden;*/
+}
+
+#modal-content-story {
+    position: relative;
+    background-color: #fff;
+    width: 90%;
+    height: 100%;
+    max-width: 600px;
+    max-height: 800vh;
+    border-radius: 10px;
+    overflow-y: auto;
+
+}
+
+
+.stories-container-detail {
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+
+.story-item-detail {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.item {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+
+.prev-button, .next-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 10px 15px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.prev-button {
+    left: 10px;
+}
+
+.next-button {
+    right: 10px;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ff4444;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.story-actions {
+    display: flex;
+    margin: 2%;
+    align-items: center;
+    gap: 15px;
+}
+
+.story-actions i {
+    font-size: 24px;
+    color: #444;
+    cursor: pointer;
+    padding: 20px;
+    transition: color 0.3s ease;
+}
+
+.story-actions i:hover {
+    color: #007bff;
+}
+
+.view-count-text {
+    font-size: 18px;
+    color: #444;
+}
+
+.add-story {
+    color: #28a745;
+}
+
+.view-count-icon {
+    color: #ffc107;
+}
+
+.delete-story {
+    color: #dc3545;
+}
+
+#story-created-date {
+    position: relative;
+    left: 55%;
+    opacity: 80%;
+}
+
+/* end story modal */
+
+/* start story viewer*/
+.viewer-list-container {
+    width: 100%;
+    margin: 2% auto;
+    padding: 16px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.viewer-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.viewer-item:last-child {
+    border-bottom: none;
+}
+
+.viewer-profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 12px;
+    border: 1px solid #ddd;
+    object-fit: cover;
+}
+
+.viewer-info {
+    flex-grow: 1;
+}
+
+.viewer-username a {
+    font-size: 16px;
+    font-weight: bold;
+    color: #262626;
+    text-decoration: none;
+}
+
+.viewer-username a:hover {
+    text-decoration: underline;
+}
+
+.viewer-fullname {
+    font-size: 14px;
+    color: #8e8e8e;
+    margin-top: 2px;
+}
+
+/* end story viewer*/
+
+
+/* start create story */
+/* Container for centering the form */
+.story-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #f0f0f5;
+    padding: 20px;
+}
+
+/* Form styling */
+.story-form {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* Title styling */
+.form-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Form group for input styling */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* File input styling */
+.story-form input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.story-form input[type="file"]:hover {
+    border-color: #999;
+}
+
+/* Submit button styling */
+.submit-btn {
+    background-color: #007BFF;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #044fac;
+}
+
+/* Styling for the preview container */
+#preview-container {
+    margin-top: 15px;
+    text-align: center;
+}
+
+/* Styling for preview image */
+.preview-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+/* Styling for preview video */
+.preview-video {
+    max-width: 100%;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.error {
+    color: red;
+}
+
+/* end create story */
+
+/*start delete account form*/
+.form-container-delete-account {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f0f2f5;
+}
+
+.delete-account-form {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 30px;
+    max-width: 400px;
+    width: 100%;
+}
+
+.delete-account-form h3 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.radio-group label:hover {
+    background-color: #f7f7f7;
+}
+
+.radio-group input[type="radio"] {
+    display: none;
+}
+
+.radio-group label::before {
+    content: "";
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #888;
+    margin-right: 10px;
+    box-sizing: border-box;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.radio-group input[type="radio"]:checked + label::before {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.radio-group input[type="radio"]:checked + label {
+    background-color: #f0f8ff;
+    border-color: #007bff;
+}
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/*end delete account form*/

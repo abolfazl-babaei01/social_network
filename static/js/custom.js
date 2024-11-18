@@ -100,12 +100,12 @@ $(document).ready(function () {
     $(document).ready(function () {
         let page = 2;
         let urlPage = '/explore/'
-        let loading = false;  // برای جلوگیری از درخواست های همزمان
+        let loading = false;
 
         $(window).scroll(function () {
-            if ($(window).scrollTop() + $(window).height() >= $(document).height() -1 )  {
+            if ($(window).scrollTop() + $(window).height() >= $(document).height() - 1) {
                 if (!loading) {
-                    loading = true;  // درحال بارگذاری
+                    loading = true;
 
                     $.ajax({
                         type: 'GET',
@@ -114,10 +114,10 @@ $(document).ready(function () {
                         success: function (data) {
                             $('#post-list').append(data);
                             page += 1;
-                            loading = false;  // بعد از بارگذاری، ریست شود
+                            loading = false;
                         },
                         error: function () {
-                            loading = false;  // درصورت خطا نیز ریست شود
+                            loading = false;
                         }
                     });
                 }
@@ -139,7 +139,7 @@ function showPostDetail(postId) {
         .then(response => response.text())
         .then(data => {
             document.getElementById('modal-body').innerHTML = data;
-            var deleteLink = document.getElementById("delete-post-link");
+            const deleteLink = document.getElementById("delete-post-link");
             if (deleteLink) {
                 deleteLink.href = '/account/delete-post/' + postId
             }
@@ -177,3 +177,111 @@ document.getElementById('add-more').addEventListener('click', function () {
     }
 });
 
+
+function showStoryDetail(userId) {
+    fetch(`story-detail/${userId}`)
+        .then(response => response.text())
+        .then(data => {
+            if (data.trim()) {
+                document.getElementById('modal-content-story').innerHTML = data;
+                document.getElementById('storyModal').style.display = 'flex';
+
+                const storyItems = document.querySelectorAll('.item');
+                let currentIndex = 0;
+
+                function sendViewRequest(storyItem) {
+                    const storyId = storyItem.dataset.storyId;
+                    fetch(`add-visit-story/${storyId}/${userId}/`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const deleteStoryLink = document.getElementById('delete-story-link')
+                            if (deleteStoryLink){
+                                deleteStoryLink.href = `/delete-story/${storyId}/`
+                            }
+                            const storyCreatedDate = document.getElementById('story-created-date');
+                            storyCreatedDate.innerHTML = '';
+                            storyCreatedDate.innerHTML = data.time_since_created + ' ago';
+
+
+                            const viewers = data.viewers;
+                            const viewerListContainer = document.querySelector('.viewer-list-container');
+                            viewerListContainer.innerHTML = '';
+                            viewers.forEach(viewer => {
+                                const userElement = document.createElement('div');
+                                userElement.classList.add('viewer-item');
+                                 userElement.innerHTML = `
+                                    <img src="media/${viewer.user__avatar}" alt="Profile Picture" class="viewer-profile-pic">
+                                    <div class="viewer-info">
+                                        <h4 class="viewer-username">
+                                            <a href="/explore/user/${viewer.user__username}">
+                                            ${viewer.user__username}
+                                            </a>
+                                        </h4>
+                                        <p class="viewer-fullname">${viewer.user__username}</p>
+                                     </div>
+            `;
+                                 viewerListContainer.appendChild(userElement);
+
+
+                            })
+                            document.getElementById('view-count').innerHTML = data.visit_count;
+
+
+
+                        })
+                }
+
+
+                sendViewRequest(storyItems[currentIndex]);
+
+                document.querySelector('.next-button').addEventListener('click', function () {
+                    currentIndex = (currentIndex + 1) % storyItems.length;
+                    showCurrentStory();
+                });
+
+                document.querySelector('.prev-button').addEventListener('click', function () {
+                    currentIndex = (currentIndex - 1 + storyItems.length) % storyItems.length;
+                    showCurrentStory();
+                });
+
+                function showCurrentStory() {
+                    storyItems.forEach((item, index) => {
+                        item.style.display = index === currentIndex ? 'block' : 'none';
+                    });
+                    sendViewRequest(storyItems[currentIndex]);
+                }
+
+                showCurrentStory();
+            } else {
+                console.warn("No story content available.");
+            }
+        })
+        .catch(error => console.error("Error loading story details:", error));
+}
+
+function previewFile() {
+    const previewContainer = document.getElementById('preview-container');
+    const fileInput = document.getElementById('file-input');
+    const file = fileInput.files[0];
+
+
+    previewContainer.innerHTML = '';
+
+    if (file) {
+        const fileType = file.type;
+
+
+        if (fileType.startsWith('image')) {
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.classList.add('preview-image');
+            previewContainer.appendChild(img);
+        } else if (fileType.startsWith('video')) {
+            const video = document.createElement('video');
+            video.src = URL.createObjectURL(file);
+            video.controls = true;
+            video.classList.add('preview-video');
+            previewContainer.appendChild(video);
+        }
+    }
+}

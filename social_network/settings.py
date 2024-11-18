@@ -29,14 +29,19 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # my apps
     'account.apps.AccountConfig',  # Users Account App
+    # Django apps
     'django.contrib.auth',
     'django.contrib.admin',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # external apps
     'taggit',  # django-taggit
+    'django_cleanup.apps.CleanupConfig',
+    # my apps
     "post.apps.PostConfig",
 
 ]
@@ -49,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'post.middleware.ExpiredStoriesMiddleware',
 ]
 
 ROOT_URLCONF = 'social_network.urls'
@@ -131,5 +137,3 @@ LOGIN_REDIRECT_URL = '/account/profile/'
 LOGIN_URL = '/account/login/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-

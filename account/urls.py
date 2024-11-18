@@ -37,5 +37,5 @@ urlpatterns = [
 
     path('user-contact/<username>/<relation>/', views.user_contact, name='user_contact'),
 
-    path('notifications-page/', views.notifications_page, name='notifications_page'),
+    path('delete-account/', views.delete_account, name='delete_account'),
 ]
