@@ -2,12 +2,13 @@ from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
 
+from .forms import LoginForm
 app_name = 'account'
 
 urlpatterns = [
     # auth views
     path('register/', views.register, name='register'),
-    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('login/', auth_views.LoginView.as_view(authentication_form=LoginForm), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     # password change
     path('password-change/', auth_views.PasswordChangeView.as_view(success_url='done'), name="password_change"),
@@ -37,5 +38,6 @@ urlpatterns = [
 
     path('user-contact/<username>/<relation>/', views.user_contact, name='user_contact'),
 
-    path('delete-account/', views.delete_account, name='delete_account'),
+    path('question-delete-account/', views.question_delete_account, name='question_delete_account'),
+    path('deleted-account/', views.deleted_account, name='deleted_account'),
 ]

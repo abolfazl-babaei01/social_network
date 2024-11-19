@@ -4,35 +4,32 @@
     Explore
 {% endblock %}
 
-{% block links %}
-    <link rel="stylesheet" href="{% static 'css/explore.css' %}">
-{% endblock %}
 
 {% block content %}
-    <hr>
-    <h2 class="title">Suggested Users</h2>
-    <div class="users-container">
-        {% for user in users %}
-            <div class="user-con">
-                {% if user.avatar %}
-                    <img src="{{ user.avatar.url }}" alt="User Avatar">
-                {% else %}
-                    <img src="{% static 'images/default-profile.jpg' %}" alt="User Avatar">
-                {% endif %}
-                <p><b><a href="{% url 'post:user_page' username=user.username %}">{{ user.username }}</a></b></p>
-                <pre>{{ user.get_full_name }}</pre>
-            <button data-csrf-token="{{ csrf_token }}" id="follow-and-unfollow-{{ user.id }}" value="{{ user.id }}"
-                            class="follow-btn">
-                        {% if request.user in user.followers.all %}
-                            Un Follow
-                        {% else %}
-                            Follow
-                        {% endif %}
-                    </button>
-            </div>
-        {% endfor %}
-    </div>
-    <hr>
+{#    <hr>#}
+{#    <h2 class="title">Suggested Users</h2>#}
+{#    <div class="users-container">#}
+{#        {% for user in users %}#}
+{#            <div class="user-con">#}
+{#                {% if user.avatar %}#}
+{#                    <img src="{{ user.avatar.url }}" alt="User Avatar">#}
+{#                {% else %}#}
+{#                    <img src="{% static 'images/default-profile.jpg' %}" alt="User Avatar">#}
+{#                {% endif %}#}
+{#                <p><b><a href="{% url 'post:user_page' username=user.username %}">{{ user.username }}</a></b></p>#}
+{#                <pre>{{ user.get_full_name }}</pre>#}
+{#            <button data-csrf-token="{{ csrf_token }}" id="follow-and-unfollow-{{ user.id }}" value="{{ user.id }}"#}
+{#                            class="follow-btn">#}
+{#                        {% if request.user in user.followers.all %}#}
+{#                            Un Follow#}
+{#                        {% else %}#}
+{#                            Follow#}
+{#                        {% endif %}#}
+{#                    </button>#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#    </div>#}
+{#    <hr>#}
     <h2 class="title">Popular Posts</h2>
     <div class="user-posts-ex" id="post-list">
         {% for post in posts %}

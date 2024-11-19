@@ -21,9 +21,9 @@
 
                 <div class="stats">
                     <span><strong>{{ user.posts.count }}</strong> posts</span>
-                    <span><strong id="followers-count">{{ user.followers.count }}</strong> <a
+                    <span><strong id="followers-count">{{ user.get_followers|length }}</strong> <a
                             href="{% url 'account:user_contact' username=user.username relation='followers' %}">followers</a></span>
-                    <span><strong id="following-count">{{ user.following.count }}</strong>
+                    <span><strong id="following-count">{{ user.get_followings|length }}</strong>
                         <a href="{% url 'account:user_contact' username=user.username relation='following' %}">following</a>
                     </span>
 

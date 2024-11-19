@@ -1,15 +1,15 @@
 # Django
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse, Http404
-from pyexpat.errors import messages
+from django.contrib import messages
 
 # other
 from .models import SocialUser, Contact
-from .forms import *
+from .forms import CreateSocialUserForm, EditSocialUserForm
 from post.models import Post, Comment
 from pprint import pprint
 
@@ -33,19 +33,19 @@ def register(request):
 
 @login_required
 def profile(request):
-    user = get_object_or_404(SocialUser, id=request.user.id)
+    user = SocialUser.objects.filter(id=request.user.id, is_active=True, is_deleted=False).first()
     return render(request, 'account/profile.html', {'user': user})
 
 
 @login_required
 def setting(request):
-    user = get_object_or_404(SocialUser, id=request.user.id)
+    user = SocialUser.objects.filter(id=request.user.id, is_active=True, is_deleted=False).first()
     return render(request, 'account/setting.html', {'user': user})
 
 
 @login_required
 def edit_profile(request):
-    user = get_object_or_404(SocialUser, id=request.user.id)
+    user = SocialUser.objects.filter(id=request.user.id, is_active=True, is_deleted=False).first()
     if request.method == 'POST':
         form = EditSocialUserForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
@@ -61,7 +61,7 @@ def follow_user(request):
     user_id = request.POST.get('user_id')
     if user_id:
         try:
-            user = get_object_or_404(SocialUser, id=user_id, is_active=True)
+            user = get_object_or_404(SocialUser, id=user_id, is_active=True, is_deleted=False)
             if user == request.user:
                 return JsonResponse({'follow_yourself': True})
             if request.user in user.followers.all():
@@ -142,14 +142,14 @@ def add_comment(request):
 
 
 def user_contact(request, username, relation):
-    user = get_object_or_404(SocialUser, username=username, is_active=True)
+    user = get_object_or_404(SocialUser, username=username, is_active=True, is_deleted=False)
     if relation == 'followers':
         users = user.get_followers()
     elif relation == 'following':
         users = user.get_followings()
     else:
         raise Http404('Invalid relation')
-    users = [request.user] + [u for u in users if u != request.user]
+    # users = [request.user] + [u for u in users if u != request.user]
     pprint(users)
     context = {'users': users, 'relation': relation, 'user': user}
     return render(request, 'account/user_contact.html', context)
@@ -163,16 +163,30 @@ def delete_post(request, post_id):
 
 
 def liked_posts(request):
-    user = get_object_or_404(SocialUser, id=request.user.id)
+    user = SocialUser.objects.filter(id=request.user.id, is_active=True, is_deleted=False).first()
     context = {'user': user}
     return render(request, 'account/liked_posts.html', context)
 
 
 def saved_posts(request):
-    user = get_object_or_404(SocialUser, id=request.user.id)
+    user = SocialUser.objects.filter(id=request.user.id, is_active=True, is_deleted=False).first()
     context = {'user': user}
     return render(request, 'account/saved_posts.html', context)
 
 
-def delete_account(request):
+def question_delete_account(request):
     return render(request, 'account/delete_account.html', {})
+
+def deleted_account(request):
+    if request.method == 'POST':
+        user = SocialUser.objects.filter(id=request.user.id, is_active=True, is_deleted=False).first()
+        if not user:
+            messages.error(request, 'this user alerdy is deleted')
+        user.is_deleted = True
+        user.username += '_deleted_' + str(user.id)
+        user.reason_deleting_account = request.POST.get('reason')
+        user.save()
+        logout(request)
+        return redirect('account:login')
+    else:
+        pass

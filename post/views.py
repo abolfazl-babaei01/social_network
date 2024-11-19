@@ -18,15 +18,23 @@ from utils.client_info import get_client_ip
 from django.utils import timezone
 from datetime import timedelta
 from django.utils.timesince import timesince
+from pprint import pprint
+
+
 # Create your views here.
 
 @login_required
 def home(request):
-    user = get_object_or_404(SocialUser, id=request.user.id)
+    user = get_object_or_404(SocialUser, id=request.user.id, is_active=True, is_deleted=False)
     current_user_stories = user.stories.filter(is_delete=False)
-    following_user = user.following.all()
+    following_user = user.following.filter(is_active=True, is_deleted=False)
     stories = Story.objects.filter(user__in=following_user, is_delete=False).select_related('user')
     story_users = {story.user for story in stories}
+
+    suggested_users = SocialUser.objects.exclude(id=request.user.id).exclude(followers__id=request.user.id).annotate(
+        mutual_followers=Count('followers', filter=Q(followers__in=request.user.following.all()))).filter(
+        is_active=True, is_deleted=False).order_by('-mutual_followers')[:10]
+
     posts = Post.objects.exclude(author_id=request.user.id).filter(author__in=following_user, is_published=True)
     for post in posts:
         post.this_comments = Comment.objects.filter(post=post, parent=None, is_published=True).prefetch_related(
@@ -37,18 +45,13 @@ def home(request):
         'story_users': story_users,
         'posts': posts,
         'user': user,
+        'suggested_users': suggested_users
     }
     return render(request, 'post/home.html', context)
 
 
 @login_required
 def explore(request):
-    users = SocialUser.objects.exclude(id=request.user.id).exclude(
-        followers__id=request.user.id
-    ).annotate(
-        mutual_followers=Count('followers', filter=Q(followers__in=request.user.following.all()))
-    ).order_by('-mutual_followers')[:10]
-
     posts = Post.objects.filter(is_published=True).annotate(
         interaction_count=Count('comments') + Count('save_by') + Count('likes')).order_by('-interaction_count')
 
@@ -67,7 +70,6 @@ def explore(request):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         return render(request, 'post/post_list_ajax.html', {'posts': final_posts})
     context = {
-        "users": users,
         'posts': final_posts
     }
     return render(request, 'post/explore.html', context)
@@ -75,7 +77,7 @@ def explore(request):
 
 @login_required
 def user_page(request, username):
-    user = get_object_or_404(SocialUser, username=username, is_active=True)
+    user = get_object_or_404(SocialUser, username=username, is_active=True, is_deleted=False)
     if request.user == user:
         return redirect('account:profile')
     return render(request, 'user/user_page.html', {'user': user})
@@ -127,7 +129,7 @@ def story_detail(request, user_id):
 
 @login_required
 def add_visit_story(request, story_id, user_id):
-    user = SocialUser.objects.get(id=user_id)
+    user = SocialUser.objects.get(id=user_id, is_active=True, is_deleted=False)
     visit_count = StoryVisit.objects.exclude(user_id=request.user.id).filter(story_id=story_id).count()
     viewers = list(
         StoryVisit.objects.filter(story_id=story_id)
@@ -168,7 +170,7 @@ def create_story(request: HttpRequest):
 
 
 def delete_story(request, story_id):
-    story = get_object_or_404(Story ,id=story_id, is_delete=False)
+    story = get_object_or_404(Story, id=story_id, is_delete=False)
     if request.user == story.user:
         story.is_delete = True
         story.save()

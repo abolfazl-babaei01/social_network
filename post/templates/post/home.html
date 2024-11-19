@@ -21,7 +21,13 @@
                 {% else %}
                     <a href="{% url 'post:create_story' %}">
                         <div class="active-user">
-                            <img src="{{ user.avatar.url }}" alt="Profile Picture" class="profile-pic">
+                            {% if user.avatar %}
+                                <img src="{{ user.avatar.url }}" alt="Profile Picture" class="profile-pic">
+                            {% else %}
+                                <img src="{% static 'images/default-profile.jpg' %}" alt="Profile Picture"
+                                     class="profile-pic">
+                            {% endif %}
+
                             <i class="fa fa-plus-circle"></i>
                         </div>
                     </a>
@@ -43,7 +49,33 @@
         {% endif %}
     </div>
 
-
+    {% if suggested_users %}
+        <hr>
+        <h2 class="title">Suggested Users</h2>
+        <div class="users-container">
+            {% for user in suggested_users %}
+                <div class="user-con">
+                    {% if user.avatar %}
+                        <img src="{{ user.avatar.url }}" alt="User Avatar">
+                    {% else %}
+                        <img src="{% static 'images/default-profile.jpg' %}" alt="User Avatar">
+                    {% endif %}
+                    <p><b><a href="{% url 'post:user_page' username=user.username %}">{{ user.username }}</a></b></p>
+                    <pre>{{ user.get_full_name }}</pre>
+                    <button data-csrf-token="{{ csrf_token }}" id="follow-and-unfollow-{{ user.id }}"
+                            value="{{ user.id }}"
+                            class="follow-btn">
+                        {% if request.user in user.followers.all %}
+                            Un Follow
+                        {% else %}
+                            Follow
+                        {% endif %}
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+        <hr>
+    {% endif %}
 
 
     <hr>

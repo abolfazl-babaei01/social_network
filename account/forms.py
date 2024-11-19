@@ -1,6 +1,6 @@
 from django import forms
 from .models import SocialUser
-
+from django.contrib.auth.forms import AuthenticationForm
 
 class CreateSocialUserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -42,3 +42,17 @@ class EditSocialUserForm(forms.ModelForm):
         if SocialUser.objects.exclude(id=self.instance.id).filter(phone=phone).exists():
             raise forms.ValidationError('This phone already exists')
         return phone
+
+
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(max_length=250, required=True,
+                               widget=forms.TextInput(attrs={'placeholder': 'username or phone number'}))
+    password = forms.CharField(max_length=250, required=True,
+                               widget=forms.PasswordInput(attrs={'placeholder': 'password'}))
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        user = SocialUser.objects.filter(username=username, is_active=True, is_deleted=False)
+        if not user:
+            raise forms.ValidationError('Please enter a correct username and password. Note that both fields may be case-sensitive.')
+        return username

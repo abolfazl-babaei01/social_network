@@ -6,8 +6,9 @@
 
 {% block content %}
 <div class="form-container-delete-account">
-<form action="" method="post" class="delete-account-form"> 
-        <h3>Why are you deactivating your account?</h3>
+<form action="{% url 'account:deleted_account' %}" method="post" id="reason-deleting-account" class="delete-account-form" data-csrf-token="{{ csrf_token }}"> 
+    {% csrf_token %}
+        <h3>Why are you deleting your account?</h3>
         <div class="radio-group">
             <input type="radio" id="option1" name="reason" value="I need a break">
             <label for="option1">I need a break.</label>

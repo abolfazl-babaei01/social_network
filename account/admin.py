@@ -11,8 +11,9 @@ class SocialUserAdmin(admin.ModelAdmin):
     search_fields = ['username']
     fieldsets = UserAdmin.fieldsets + (
         (
-            'Additional Info', {'fields': ('date_of_birth', 'avatar', 'job', 'bio', 'phone')}),
+            'Additional Info', {'fields': ('date_of_birth', 'avatar', 'job', 'bio', 'phone', 'is_deleted', 'reason_deleting_account')}),
     )
+    list_filter = ['is_deleted']
 
 
 @admin.register(Contact)
