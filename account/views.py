@@ -10,7 +10,7 @@ from django.templatetags.static import static
 
 # other
 from .models import SocialUser, Contact
-from .forms import CreateSocialUserForm, EditSocialUserForm, RegisterModelForm
+from .forms import EditSocialUserModelForm, RegisterModelForm
 from post.models import Post, Comment
 from pprint import pprint
 
@@ -50,12 +50,12 @@ def setting(request):
 def edit_profile(request):
     user = SocialUser.objects.filter(id=request.user.id, is_active=True, is_deleted=False).first()
     if request.method == 'POST':
-        form = EditSocialUserForm(request.POST, request.FILES, instance=user)
+        form = EditSocialUserModelForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
             return redirect('account:profile')
     else:
-        form = EditSocialUserForm(instance=user)
+        form = EditSocialUserModelForm(instance=user)
     return render(request, 'account/edit_profile.html', {'user': user, 'form': form})
 
 

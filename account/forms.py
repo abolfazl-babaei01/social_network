@@ -25,7 +25,7 @@ class CreateSocialUserForm(UserCreationForm):
 
 
 
-class EditSocialUserForm(UserChangeForm):
+class ChangeSocialUserForm(UserChangeForm):
     class Meta(UserCreationForm.Meta):
         model = SocialUser
         fields = ['avatar', 'username', 'first_name', 'last_name', 'bio', 'job', 'email', 'phone']
@@ -72,3 +72,22 @@ class RegisterModelForm(forms.ModelForm):
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError('Passwords do not match')
         return password2
+
+class EditSocialUserModelForm(forms.ModelForm):
+    class Meta:
+        model = SocialUser
+        fields = ['avatar', 'username', 'first_name', 'last_name', 'bio', 'job', 'email', 'phone']
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+
+        if SocialUser.objects.exclude(id=self.instance.id).filter(email__exact=email).exists():
+            raise forms.ValidationError('This email already exists')
+        return email
+
+    def clean_phone(self):
+        phone = self.cleaned_data.get('phone')
+
+        if SocialUser.objects.exclude(id=self.instance.id).filter(phone=phone).exists():
+            raise forms.ValidationError('This phone already exists')
+        return phone
