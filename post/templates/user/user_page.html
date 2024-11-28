@@ -33,7 +33,8 @@
                 <div class="user-actions">
 
 
-                    <button data-csrf-token="{{ csrf_token }}" id="follow-and-unfollow-{{ user.id }}" value="{{ user.id }}"
+                    <button data-csrf-token="{{ csrf_token }}" id="follow-and-unfollow-{{ user.id }}"
+                            value="{{ user.id }}"
                             class="follow-btn">
                         {% if request.user in user.followers.all %}
                             Un Follow
@@ -48,11 +49,12 @@
                 </div>
             </div>
         </div>
-      <div>
-        <pre>{{ user.job }}</pre>
-        <p>{{ user.bio }}</p>
-
-    </div>
+        <div>
+            <pre>{{ user.job }}</pre>
+            <p>{{ user.bio }}</p>
+            <hr>
+            <br>
+        </div>
         <div class="user-posts">
             {% for post in user.posts.all %}
                 <div class="user-post">

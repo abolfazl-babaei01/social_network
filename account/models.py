@@ -6,6 +6,7 @@ from datetime import timedelta
 
 
 
+
 # Create your models here.
 
 
@@ -37,6 +38,8 @@ class SocialUser(AbstractUser):
 
 class Contact(models.Model):
     """
+    Through Model :
+
     user = SocialUser.objects.get(pk=1) اینجا یک کاربر رو بصورت فرضی از دیتابیس میگیریم
 
     user_followings = user.rel_from_set.all() اینجا با استفاده از اون نام ارتباطی فالووینگ ها یا همون کسایی که فالو کرده رو میگیریم

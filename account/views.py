@@ -6,28 +6,31 @@ from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse, Http404
 from django.contrib import messages
+from django.templatetags.static import static
 
 # other
 from .models import SocialUser, Contact
-from .forms import CreateSocialUserForm, EditSocialUserForm
+from .forms import CreateSocialUserForm, EditSocialUserForm, RegisterModelForm
 from post.models import Post, Comment
 from pprint import pprint
+
 
 # Create your views here.
 
 
 def register(request):
     if request.method == 'POST':
-        form = CreateSocialUserForm(request.POST)
+        form = RegisterModelForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.set_password(form.cleaned_data['password'])
+
+            user.set_password(form.cleaned_data['password1'])
             form.save()
             login(request, user)
             return redirect('account:profile')
 
     else:
-        form = CreateSocialUserForm()
+        form = RegisterModelForm()
     return render(request, 'registration/register.html', {'form': form})
 
 

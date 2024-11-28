@@ -33,7 +33,7 @@ def home(request):
 
     suggested_users = SocialUser.objects.exclude(id=request.user.id).exclude(followers__id=request.user.id).annotate(
         mutual_followers=Count('followers', filter=Q(followers__in=request.user.following.all()))).filter(
-        is_active=True, is_deleted=False).order_by('-mutual_followers')[:10]
+        is_active=True, is_deleted=False).order_by('-mutual_followers')[:7]
 
     posts = Post.objects.exclude(author_id=request.user.id).filter(author__in=following_user, is_published=True)
     for post in posts:

@@ -20,7 +20,7 @@
                     <span><strong>{{ user.posts.count }}</strong> posts</span>
                     <span><strong id="followers-count">{{ user.get_followers|length }}</strong> <a
                             href="{% url 'account:user_contact' username=user.username relation='followers' %}">followers</a></span>
-                    <span><strong id="following-count">{{ user.get_followings|length }}</strong> 
+                    <span><strong id="following-count">{{ user.get_followings|length }}</strong>
                         <a href="{% url 'account:user_contact' username=user.username relation='following' %}">following</a>
                     </span>
                 </div>
@@ -37,6 +37,8 @@
     <div>
         <pre>{{ user.job }}</pre>
         <p>{{ user.bio }}</p>
+        <hr>
+        <br>
 
     </div>
     
