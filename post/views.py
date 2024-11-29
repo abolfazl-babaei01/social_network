@@ -33,7 +33,7 @@ def home(request):
 
     suggested_users = SocialUser.objects.exclude(id=request.user.id).exclude(followers__id=request.user.id).annotate(
         mutual_followers=Count('followers', filter=Q(followers__in=request.user.following.all()))).filter(
-        is_active=True, is_deleted=False).order_by('-mutual_followers')[:7]
+        is_active=True, is_deleted=False).order_by('-mutual_followers')[:5]
 
     posts = Post.objects.exclude(author_id=request.user.id).filter(author__in=following_user, is_published=True)
     for post in posts:
@@ -52,12 +52,15 @@ def home(request):
 
 @login_required
 def explore(request):
+    # get pop posts
     posts = Post.objects.filter(is_published=True).annotate(
         interaction_count=Count('comments') + Count('save_by') + Count('likes')).order_by('-interaction_count')
 
     recent_posts = posts.filter(created_at__gte=timezone.now() - timedelta(days=1))
 
+
     final_posts = posts | recent_posts
+    # add pagination with ajax
     paginator = Paginator(final_posts, 12)
     page_number = request.GET.get(key='page', default=1)
     try:
@@ -69,9 +72,18 @@ def explore(request):
 
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         return render(request, 'post/post_list_ajax.html', {'posts': final_posts})
+
+    # add search form coding
+    query = request.GET.get('q')
+    result_search = []
+    if query:
+        result_search = SocialUser.objects.filter(Q(username__icontains=query) | Q(first_name__icontains=query) | Q(last_name__icontains=query))
+
     context = {
-        'posts': final_posts
+        'posts': final_posts,
+        'result_search': result_search
     }
+
     return render(request, 'post/explore.html', context)
 
 
@@ -175,3 +187,4 @@ def delete_story(request, story_id):
         story.is_delete = True
         story.save()
         return redirect('post:index')
+

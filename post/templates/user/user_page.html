@@ -50,8 +50,9 @@
             </div>
         </div>
         <div>
-            <pre>{{ user.job }}</pre>
-            <p>{{ user.bio }}</p>
+            <span>{{ user.get_full_name|default:'' }}</span>
+            <pre>{{ user.job|default:'' }}</pre>
+            <p>{{ user.bio|default:'' }}</p>
             <hr>
             <br>
         </div>
