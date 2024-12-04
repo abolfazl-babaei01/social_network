@@ -29,7 +29,7 @@
             <a href="{% url 'post:delete_story' story_id=0 %}" id="delete-story-link"><i
                     class="fa fa-trash delete-story"></i> </a>
             <i class="fa fa-eye view-count-icon" aria-hidden="true"></i>
-            <span id="view-count" class="view-count-text">{{ stories|length }} بازدید</span>
+            <span id="view-count" class="view-count-text">{{ stories.visits.count|default:0 }} </span>
 
         </div>
 

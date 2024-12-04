@@ -4,9 +4,6 @@
     Home
 {% endblock %}
 
-{% block links %}
-    <link rel="stylesheet" href="{% static 'css/home.css' %}">
-{% endblock %}
 
 {% block content %}
 
@@ -20,7 +17,7 @@
                     </a>
                 {% else %}
                     <a href="{% url 'post:create_story' %}">
-                        <div class="active-user">
+                        <div class="active-user-home">
                             {% if user.avatar %}
                                 <img src="{{ user.avatar.url }}" alt="Profile Picture" class="profile-pic">
                             {% else %}
@@ -125,21 +122,9 @@
             <hr>
         {% endfor %}
     </div>
-
-
-    {#    <div id="postModal" class="modal">#}
-    {#        <div class="modal-content">#}
-    {#            <span class="close" onclick="closeModal()">&times;</span>#}
-    {#            <div id="modal-body">#}
-    {#                <!-- Story details will be loaded here -->#}
-    {#            </div>#}
-    {#        </div>#}
-    {#    </div>#}
-
+    <!-- The story modal -->
     <div id="storyModal">
         <div id="modal-content-story">
-
-
         </div>
     </div>
 

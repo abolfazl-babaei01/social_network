@@ -146,7 +146,7 @@ svg {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    margin-right: 10px;
+    margin-right: 9px;
 }
 
 .post-images {
@@ -308,15 +308,34 @@ hr {
 
 .avatar {
     flex-shrink: 0;
-    margin-right: 20px;
+    margin-right: 10px;
 }
 
 .avatar img {
     width: 150px;
     height: 150px;
     border-radius: 50%;
-    border: 2px solid #dbdbdb;
 }
+
+.avatar-circle {
+    width: 150px;
+    height: 150px;
+    border: 3px solid #f09433;
+    border-radius: 50%;
+    padding: 3px;
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.avatar-normal {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
 
 .user-info {
     flex-grow: 1;
@@ -388,6 +407,23 @@ hr {
     object-fit: cover;
 }
 
+
+.active-user-profile {
+    border: 3px solid white;
+    border-radius: 50%;
+    padding: 3px;
+    background-color: white;
+}
+
+.active-user-profile svg {
+    bottom: 5px;
+    right: 5px;
+    font-size: 20px;
+    color: deepskyblue;
+    background-color: #ffffff;
+    border-radius: 50%;
+    padding: 2px;
+}
 
 /*------------profile buttons---------------*/
 
@@ -594,6 +630,7 @@ hr {
 
 .post-form {
     margin-bottom: 20px;
+    font-family: 'dana medium', serif;
 }
 
 .form-row {
@@ -894,7 +931,7 @@ hr {
     align-items: center;
 }
 
-.active-user {
+.active-user-home {
     position: relative;
     display: inline-block;
     width: 70px;
@@ -907,7 +944,7 @@ hr {
     background-color: white;
 }
 
-.active-user svg {
+.active-user-home svg {
     position: absolute;
     bottom: 5px;
     right: 5px;
@@ -1291,7 +1328,7 @@ input[type="submit"]:hover {
 
 .search-form-container {
     max-width: 600px;
-    max-height:200px ;
+    max-height: 200px;
     margin: 0 auto;
     border-radius: 8px;
 }
@@ -1300,7 +1337,7 @@ input[type="submit"]:hover {
     font-family: 'dana medium', serif;
     padding: 10px;
     border-radius: 4px;
-    border:2px solid #d0d0d0 ;
+    border: 2px solid #d0d0d0;
     width: 100%;
 }
 

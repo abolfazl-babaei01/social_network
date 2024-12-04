@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+
 <form method="POST" enctype="multipart/form-data" class="custom-form">
     {% csrf_token %}
     <div class="post-form">
@@ -23,5 +24,6 @@
     <button type="button" id="add-more" class="btn btn-add-more">Add more images</button>
     <button type="submit" class="btn btn-submit">Submit</button>
 </form>
+
 
 {% endblock %}

@@ -59,10 +59,6 @@ class Story(models.Model):
     is_delete = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def is_expired(self):
-        expiration_time = self.created_at + timedelta(minutes=60)
-        return timezone.now() > expiration_time
-
     def is_video(self):
         video_extensions = ['.mp4', '.webm']
         return any(self.file.url.endswith(ext) for ext in video_extensions)

@@ -31,7 +31,7 @@ class StoryVisitInline(admin.StackedInline):
 
 @admin.register(Story)
 class StoryAdmin(admin.ModelAdmin):
-    list_display = ['user', 'created_at','is_delete', 'is_expired']
+    list_display = ['user', 'created_at','is_delete']
     list_filter = ['user']
     list_editable = ['is_delete']
     autocomplete_fields = ['user']

@@ -179,7 +179,7 @@ document.getElementById('add-more').addEventListener('click', function () {
 
 
 function showStoryDetail(userId) {
-    fetch(`story-detail/${userId}`)
+    fetch(`/story-detail/${userId}/`)
         .then(response => response.text())
         .then(data => {
             if (data.trim()) {
@@ -191,7 +191,7 @@ function showStoryDetail(userId) {
 
                 function sendViewRequest(storyItem) {
                     const storyId = storyItem.dataset.storyId;
-                    fetch(`add-visit-story/${storyId}/${userId}/`)
+                    fetch(`/add-visit-story/${storyId}/${userId}/`)
                         .then(response => response.json())
                         .then(data => {
                             const deleteStoryLink = document.getElementById('delete-story-link')
@@ -210,7 +210,7 @@ function showStoryDetail(userId) {
                                 const userElement = document.createElement('div');
                                 userElement.classList.add('viewer-item');
                                  userElement.innerHTML = `
-                                    <img src="media/${viewer.user__avatar}" alt="Profile Picture" class="viewer-profile-pic">
+                                    <img src="/media/${viewer.user__avatar}" alt="Profile Picture" class="viewer-profile-pic">
                                     <div class="viewer-info">
                                         <h4 class="viewer-username">
                                             <a href="/explore/user/${viewer.user__username}">
@@ -224,6 +224,7 @@ function showStoryDetail(userId) {
 
 
                             })
+                            console.log(data.visit_count)
                             document.getElementById('view-count').innerHTML = data.visit_count;
 
 

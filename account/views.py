@@ -19,6 +19,22 @@ from pprint import pprint
 
 
 def register(request):
+    """
+    Handles the registration of a new social user.
+
+    This view renders a registration form and processes the submitted data to
+    create a new user. If the registration is successful, the user is logged in
+    and redirected to their profile.
+
+    Args:
+        request (Http): User http request for render registration form.
+
+    Returns:
+        HttpResponse:  Renders the registration form page if the request is
+        GET or the form is invalid. Redirects to the profile page if the
+        registration is successful.
+    """
+
     if request.method == 'POST':
         form = RegisterModelForm(request.POST)
         if form.is_valid():
@@ -36,18 +52,56 @@ def register(request):
 
 @login_required
 def profile(request):
+    """
+    Handles the profile page for current user.
+
+    Args:
+        request (Http): User http request for render profile page.
+
+    Returns:
+        HttpResponse:  Renders the profile page if the user is logged.
+
+    """
     user = SocialUser.objects.filter(id=request.user.id, is_active=True, is_deleted=False).first()
-    return render(request, 'account/profile.html', {'user': user})
+    has_active_story = user.stories.filter(is_delete=False).exists()
+    context = {
+        'user': user,
+        'has_active_story': has_active_story
+    }
+    return render(request, 'account/profile.html', context)
 
 
 @login_required
 def setting(request):
+    """
+    Handles the settings page for current user.
+    This view renders the settings page for the current user.
+    """
     user = SocialUser.objects.filter(id=request.user.id, is_active=True, is_deleted=False).first()
     return render(request, 'account/setting.html', {'user': user})
 
 
 @login_required
 def edit_profile(request):
+    """
+    Handles the profile editing functionality for the current user.
+
+    This view allows authenticated users to edit their profile information,
+    such as updating their personal details or uploading a new profile picture.
+    The changes are saved if the submitted form is valid.
+
+    Args:
+        request (HttpRequest): The HTTP request object containing metadata
+        about the request.
+
+    Returns:
+        HttpResponse:
+            - Renders the edit profile page with the current user's information
+              and an empty or pre-filled form (if the request is GET).
+            - Redirects to the profile page if the form submission is successful.
+    """
+
+
     user = SocialUser.objects.filter(id=request.user.id, is_active=True, is_deleted=False).first()
     if request.method == 'POST':
         form = EditSocialUserModelForm(request.POST, request.FILES, instance=user)
@@ -61,6 +115,33 @@ def edit_profile(request):
 
 @require_POST
 def follow_user(request):
+    """
+    Handles the follow/unfollow functionality for users.
+
+    This view allows the current user to follow or unfollow another user.
+    If the targeted user is already followed, the function will remove the
+    follow relationship (unfollow). Otherwise, it creates a new follow
+    relationship.
+
+    Args:
+        request (HttpRequest): The HTTP request object containing a POST
+        parameter `user_id` that specifies the ID of the user to follow or unfollow.
+
+    Returns:
+        JsonResponse:
+            - If the follow/unfollow operation is successful, returns a JSON response
+              containing:
+                - `followers_count`: The updated number of followers of the targeted user.
+                - `following_count`: The updated number of users the current user is following.
+                - `followed`: A boolean indicating whether the current user is now following
+                  the targeted user.
+            - If the user ID is invalid or the user is not found, returns a JSON response
+              with an appropriate error message.
+            - If the current user attempts to follow themselves, returns a JSON response
+              with `follow_yourself: True`.
+
+    """
+
     user_id = request.POST.get('user_id')
     if user_id:
         try:
@@ -152,8 +233,6 @@ def user_contact(request, username, relation):
         users = user.get_followings()
     else:
         raise Http404('Invalid relation')
-    # users = [request.user] + [u for u in users if u != request.user]
-    pprint(users)
     context = {'users': users, 'relation': relation, 'user': user}
     return render(request, 'account/user_contact.html', context)
 
@@ -179,6 +258,7 @@ def saved_posts(request):
 
 def question_delete_account(request):
     return render(request, 'account/delete_account.html', {})
+
 
 def deleted_account(request):
     if request.method == 'POST':

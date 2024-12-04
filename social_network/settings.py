@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
     # my apps
     "post.apps.PostConfig",
-
 ]
 
 MIDDLEWARE = [

@@ -18,7 +18,8 @@ from utils.client_info import get_client_ip
 from django.utils import timezone
 from datetime import timedelta
 from django.utils.timesince import timesince
-from pprint import pprint
+# random
+import random
 
 
 # Create your views here.
@@ -35,7 +36,8 @@ def home(request):
         mutual_followers=Count('followers', filter=Q(followers__in=request.user.following.all()))).filter(
         is_active=True, is_deleted=False).order_by('-mutual_followers')[:5]
 
-    posts = Post.objects.exclude(author_id=request.user.id).filter(author__in=following_user, is_published=True)
+    posts = Post.objects.exclude(author_id=request.user.id).filter(author__in=following_user, is_published=True).order_by('?')
+    # posts = random.shuffle(posts)
     for post in posts:
         post.this_comments = Comment.objects.filter(post=post, parent=None, is_published=True).prefetch_related(
             'sub_comments').order_by('-created')
@@ -90,9 +92,10 @@ def explore(request):
 @login_required
 def user_page(request, username):
     user = get_object_or_404(SocialUser, username=username, is_active=True, is_deleted=False)
+    has_active_story = user.stories.filter(is_delete=False).exists()
     if request.user == user:
         return redirect('account:profile')
-    return render(request, 'user/user_page.html', {'user': user})
+    return render(request, 'user/user_page.html', {'user': user, 'has_active_story': has_active_story})
 
 
 @login_required
@@ -174,7 +177,7 @@ def create_story(request: HttpRequest):
             new_story = form.save(commit=False)
             new_story.user = request.user
             new_story.save()
-            return redirect('post:index')
+            return redirect('account:profile')
 
     else:
         form = CreateStoryForm()
@@ -186,5 +189,5 @@ def delete_story(request, story_id):
     if request.user == story.user:
         story.is_delete = True
         story.save()
-        return redirect('post:index')
+        return redirect('account:profile')
 

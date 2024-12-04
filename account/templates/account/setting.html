@@ -13,7 +13,7 @@
             <p><a href="{% url 'account:password_change' %}">Change Password</a></p>
             <p><a href="{% url 'account:password_reset' %}">Forgot Password</a></p>
             <p><a href="{% url 'account:question_delete_account' %}">Delete Account</a></p>
-            <p><a href="#">Contact Support</a></p>
+{#            <p><a href="#">Contact Support</a></p>#}
             <form method="post" action="{% url 'account:logout' %}">
                 {% csrf_token %}
                 <button type="submit">Logout</button>
@@ -38,19 +38,19 @@
                 <a href="{% url 'account:saved_posts' %}">View Saved Posts</a>
             </div>
 
-            <!-- آمار پیج -->
-            <div class="dashboard-option">
-                <i class="fas fa-chart-line icon"></i>
-                <h3>Page Stats</h3>
-                <a href="#">View Stats</a>
-            </div>
-
-            <!-- ارتباط با پشتیبانی -->
-            <div class="dashboard-option">
-                <i class="fas fa-headset icon"></i>
-                <h3>Contact Support</h3>
-                <a href="#">Get Help</a>
-            </div>
+{#            <!-- آمار پیج -->#}
+{#            <div class="dashboard-option">#}
+{#                <i class="fas fa-chart-line icon"></i>#}
+{#                <h3>Page Stats</h3>#}
+{#                <a href="#">View Stats</a>#}
+{#            </div>#}
+{##}
+{#            <!-- ارتباط با پشتیبانی -->#}
+{#            <div class="dashboard-option">#}
+{#                <i class="fas fa-headset icon"></i>#}
+{#                <h3>Contact Support</h3>#}
+{#                <a href="#">Get Help</a>#}
+{#            </div>#}
         </div>
     </div>
 </div>

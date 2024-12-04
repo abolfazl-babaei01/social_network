@@ -8,13 +8,25 @@
 {% block content %}
     <div class="user-page">
         <div class="profile-header">
+
             <div class="avatar">
-                {% if user.avatar %}
-                    <img src="{{ user.avatar.url }}" alt="User Avatar">
-                {% else %}
-                    <img src="{% static 'images/default-profile.jpg' %}" alt="User Avatar">
-                {% endif %}
+                <a href="#">
+                    {% if user.avatar %}
+                        {% if has_active_story %}
+                            <div class="avatar-circle" onclick="showStoryDetail({{ user.id }})">
+                                <img src="{{ user.avatar.url }}" alt="User Avatar" class="profile-pic">
+                            </div>
+                        {% else %}
+                            <div class="avatar-normal">
+                                <img src="{{ user.avatar.url }}" alt="User Avatar" class="profile-pic">
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <img src="{% static 'images/default-profile.jpg' %}" alt="User Avatar">
+                    {% endif %}
+                </a>
             </div>
+
             <div class="user-info">
                 <h2>{{ user.username }}</h2>
 
@@ -68,13 +80,18 @@
 
 
 
-
+    <!-- The post modal -->
     <div id="postModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <div id="modal-body">
                 <!-- Post details will be loaded here -->
             </div>
+        </div>
+    </div>
+    <!-- The story modal -->
+    <div id="storyModal">
+        <div id="modal-content-story">
         </div>
     </div>
 {% endblock %}
