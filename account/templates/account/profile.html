@@ -17,7 +17,11 @@
                                 <img src="{{ user.avatar.url }}" alt="User Avatar" class="profile-pic">
                             </div>
                         {% else %}
-                   
+                   <div class="create-story-container">
+                       <a href="{% url 'post:create_story' %}">
+                           <i class="fa fa-plus"></i>
+                       </a>
+                   </div>
                              
                             <div class="avatar-normal">
                                 <img src="{{ user.avatar.url }}" alt="User Avatar" class="profile-pic">

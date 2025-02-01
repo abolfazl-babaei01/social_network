@@ -5,6 +5,9 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 
 class CreateSocialUserForm(UserCreationForm):
+    """
+    A form for creating new SocialUser accounts with email and phone validation to ensure uniqueness.
+    """
     class Meta(UserCreationForm.Meta):
         model = SocialUser
         fields = ['username', 'phone', 'email']
@@ -26,6 +29,9 @@ class CreateSocialUserForm(UserCreationForm):
 
 
 class ChangeSocialUserForm(UserChangeForm):
+    """
+    A form for changing SocialUser account details with email and phone validation to ensure uniqueness.
+    """
     class Meta(UserCreationForm.Meta):
         model = SocialUser
         fields = ['avatar', 'username', 'first_name', 'last_name', 'bio', 'job', 'email', 'phone']
@@ -47,6 +53,10 @@ class ChangeSocialUserForm(UserChangeForm):
 
 
 class LoginForm(AuthenticationForm):
+    """
+    A login form for authenticating SocialUser accounts with username validation.
+    """
+
     username = forms.CharField(max_length=250, required=True)
     password = forms.CharField(max_length=250, required=True, widget=forms.PasswordInput)
 
@@ -59,6 +69,9 @@ class LoginForm(AuthenticationForm):
         return username
 
 class RegisterModelForm(forms.ModelForm):
+    """
+    A form for registering SocialUser accounts with password validation and field checks.
+    """
     password1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Confirm Password(again)'}))
     class Meta:
@@ -74,6 +87,9 @@ class RegisterModelForm(forms.ModelForm):
         return password2
 
 class EditSocialUserModelForm(forms.ModelForm):
+    """
+    A form for editing SocialUser accounts with email and phone validation to ensure uniqueness.
+    """
     class Meta:
         model = SocialUser
         fields = ['avatar', 'username', 'first_name', 'last_name', 'bio', 'job', 'email', 'phone']

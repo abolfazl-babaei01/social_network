@@ -55,7 +55,7 @@ class Comment(models.Model):
 
 class Story(models.Model):
     user = models.ForeignKey(SocialUser, on_delete=models.CASCADE, related_name='stories')
-    file = models.FileField(upload_to='video/stories/', validators=[FileExtensionValidator(['mp4', 'png', 'jpg', 'jpeg'])])
+    file = models.FileField(upload_to='stories/', validators=[FileExtensionValidator(['mp4', 'png', 'jpg', 'jpeg'])])
     is_delete = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 

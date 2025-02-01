@@ -101,7 +101,6 @@ def edit_profile(request):
             - Redirects to the profile page if the form submission is successful.
     """
 
-
     user = SocialUser.objects.filter(id=request.user.id, is_active=True, is_deleted=False).first()
     if request.method == 'POST':
         form = EditSocialUserModelForm(request.POST, request.FILES, instance=user)
@@ -167,6 +166,9 @@ def follow_user(request):
 
 @require_POST
 def like_post(request):
+    """
+    Handle POST request to like or unlike a post, toggling the like status and returning the updated like count.
+    """
     post_id = request.POST.get('post_id')
     if post_id:
         try:
@@ -186,6 +188,10 @@ def like_post(request):
 
 @require_POST
 def save_post(request):
+    """
+    Handle POST request to save or unsave a post, toggling the saved status and returning the updated save status.
+    """
+
     post_id = request.POST.get('post_id')
     if post_id:
         try:
@@ -205,6 +211,9 @@ def save_post(request):
 
 @require_POST
 def add_comment(request):
+    """
+    Handle POST request to add a comment to a post, save it, and return the updated list of published comments.
+    """
     post_id = request.POST.get('post_id')
     parent_id = request.POST.get('parent_id')
     comment_text = request.POST.get('comment_text')
@@ -226,6 +235,10 @@ def add_comment(request):
 
 
 def user_contact(request, username, relation):
+    """
+    Handle request to display a user's followers or following based on the specified relation ('followers' or 'following').
+    """
+
     user = get_object_or_404(SocialUser, username=username, is_active=True, is_deleted=False)
     if relation == 'followers':
         users = user.get_followers()
@@ -238,29 +251,45 @@ def user_contact(request, username, relation):
 
 
 def delete_post(request, post_id):
+    """
+    Handle POST request to delete a post.
+    """
     post = get_object_or_404(Post, id=post_id, is_published=True)
+    # check post author
     if post.author == request.user:
         post.delete()
         return redirect('account:profile')
 
 
 def liked_posts(request):
+    """
+    returning a list of this user liked posts and check user status
+    """
     user = SocialUser.objects.filter(id=request.user.id, is_active=True, is_deleted=False).first()
     context = {'user': user}
     return render(request, 'account/liked_posts.html', context)
 
 
 def saved_posts(request):
+    """
+    returning a list of this user saved posts and check user status
+    """
     user = SocialUser.objects.filter(id=request.user.id, is_active=True, is_deleted=False).first()
     context = {'user': user}
     return render(request, 'account/saved_posts.html', context)
 
 
 def question_delete_account(request):
+    """
+    Display account deletion template and reasons for deletion
+    """
     return render(request, 'account/delete_account.html', {})
 
 
 def deleted_account(request):
+    """
+    Handle POST request to mark a user account as deleted, save the reason, and log out the user.
+    """
     if request.method == 'POST':
         user = SocialUser.objects.filter(id=request.user.id, is_active=True, is_deleted=False).first()
         if not user:

@@ -7,9 +7,15 @@ from .forms import CreateSocialUserForm, ChangeSocialUserForm
 # Register your models here.
 @admin.register(SocialUser)
 class SocialUserAdmin(UserAdmin):
-    add_form = CreateSocialUserForm
-    form = ChangeSocialUserForm
-    model = SocialUser
+
+    """
+    Admin configuration for the SocialUser model, including custom forms, fieldsets, and list display settings.
+    """
+
+
+    add_form = CreateSocialUserForm # custom create form
+    form = ChangeSocialUserForm # custom edit form
+    model = SocialUser # UserModel
     list_display = ['username', 'first_name', 'last_name', 'email', 'is_active']
     list_editable = ['is_active']
     search_fields = ['username']
@@ -36,4 +42,9 @@ class SocialUserAdmin(UserAdmin):
 
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
+
+    """
+    Admin configuration for the Contact model
+    Displaying `user_from` and `user_to`
+    """
     list_display = ['user_from', 'user_to']

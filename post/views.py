@@ -166,6 +166,7 @@ def add_visit_story(request, story_id, user_id):
                 StoryVisit.objects.create(story_id=story_id, user_id=request.user.id, ip=user_ip)
     except Exception as e:
         print(f'error this view (add_visit_story): {e}')
+
     return JsonResponse(data)
 
 
