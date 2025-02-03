@@ -26,18 +26,29 @@ import random
 
 @login_required
 def home(request):
+    """
+    User Home Page
+    """
+    # the current user
     user = get_object_or_404(SocialUser, id=request.user.id, is_active=True, is_deleted=False)
+    # the get current user stories
     current_user_stories = user.stories.filter(is_delete=False)
+    # get user followings
     following_user = user.following.filter(is_active=True, is_deleted=False)
-    stories = Story.objects.filter(user__in=following_user, is_delete=False).select_related('user')
-    story_users = {story.user for story in stories}
 
+    # get user stories that the current user follows
+    stories = Story.objects.filter(user__in=following_user, is_delete=False).select_related('user')
+    # convert to dictionary data type
+    story_users = {story.user for story in stories}
+    # get five suggested users
     suggested_users = SocialUser.objects.exclude(id=request.user.id).exclude(followers__id=request.user.id).annotate(
         mutual_followers=Count('followers', filter=Q(followers__in=request.user.following.all()))).filter(
         is_active=True, is_deleted=False).order_by('-mutual_followers')[:5]
 
-    posts = Post.objects.exclude(author_id=request.user.id).filter(author__in=following_user, is_published=True).order_by('?')
-    # posts = random.shuffle(posts)
+    # all posts of users that the current user follows
+    posts = Post.objects.exclude(author_id=request.user.id).filter(author__in=following_user,
+                                                                   is_published=True).order_by('?')
+
     for post in posts:
         post.this_comments = Comment.objects.filter(post=post, parent=None, is_published=True).prefetch_related(
             'sub_comments').order_by('-created')
@@ -60,7 +71,6 @@ def explore(request):
 
     recent_posts = posts.filter(created_at__gte=timezone.now() - timedelta(days=1))
 
-
     final_posts = posts | recent_posts
     # add pagination with ajax
     paginator = Paginator(final_posts, 12)
@@ -79,7 +89,8 @@ def explore(request):
     query = request.GET.get('q')
     result_search = []
     if query:
-        result_search = SocialUser.objects.filter(Q(username__icontains=query) | Q(first_name__icontains=query) | Q(last_name__icontains=query))
+        result_search = SocialUser.objects.filter(
+            Q(username__icontains=query) | Q(first_name__icontains=query) | Q(last_name__icontains=query))
 
     context = {
         'posts': final_posts,
@@ -91,15 +102,24 @@ def explore(request):
 
 @login_required
 def user_page(request, username):
+    """
+    Displays the profile page of a specific user. Redirects to the user's own profile if accessed by themselves.
+    """
     user = get_object_or_404(SocialUser, username=username, is_active=True, is_deleted=False)
     has_active_story = user.stories.filter(is_delete=False).exists()
     if request.user == user:
         return redirect('account:profile')
-    return render(request, 'user/user_page.html', {'user': user, 'has_active_story': has_active_story})
+
+    context = {'user': user, 'has_active_story': has_active_story}
+    return render(request, 'user/user_page.html', context)
 
 
 @login_required
 def post_detail(request, post_id):
+    """
+    Displays post details along with its approved comments.
+    Filters and orders comments by creation date in descending order.
+    """
     post = get_object_or_404(Post, id=post_id)
     comments = Comment.objects.filter(post_id=post.id, parent=None, is_published=True).prefetch_related(
         'sub_comments').order_by('-created')
@@ -108,6 +128,10 @@ def post_detail(request, post_id):
 
 @login_required
 def create_post(request):
+    """
+    Handles the creation of a new post with multiple images.
+    Saves the post and associated images if the forms are valid.
+    """
     ImageFormSet = modelformset_factory(Image, form=ImageForm, extra=1, max_num=10)
 
     if request.method == 'POST':
@@ -133,6 +157,10 @@ def create_post(request):
 
 @login_required
 def story_detail(request, user_id):
+    """
+    Displays the stories of a specific user that are not deleted.
+    Fetches and displays stories along with the user details.
+    """
     stories = Story.objects.filter(user_id=user_id, is_delete=False).prefetch_related('visits')
     user = SocialUser.objects.get(id=user_id)
     context = {
@@ -144,6 +172,10 @@ def story_detail(request, user_id):
 
 @login_required
 def add_visit_story(request, story_id, user_id):
+    """
+    Tracks a user's visit to a story and returns visit details.
+    Records the visit if it's the user's first time and returns the updated viewers, visit count, and time since creation.
+    """
     user = SocialUser.objects.get(id=user_id, is_active=True, is_deleted=False)
     visit_count = StoryVisit.objects.exclude(user_id=request.user.id).filter(story_id=story_id).count()
     viewers = list(
@@ -172,6 +204,10 @@ def add_visit_story(request, story_id, user_id):
 
 @login_required
 def create_story(request: HttpRequest):
+    """
+    Handles the creation of a new story.
+    Saves the story if the form is valid and redirects to the user's profile page.
+    """
     if request.method == 'POST':
         form = CreateStoryForm(request.POST, request.FILES)
         if form.is_valid():
@@ -186,9 +222,11 @@ def create_story(request: HttpRequest):
 
 
 def delete_story(request, story_id):
+    """
+     Marks a story as deleted if the logged-in user is the owner.
+    """
     story = get_object_or_404(Story, id=story_id, is_delete=False)
     if request.user == story.user:
         story.is_delete = True
         story.save()
         return redirect('account:profile')
-

@@ -10,6 +10,10 @@ from datetime import timedelta
 
 
 class Post(models.Model):
+    """
+    Model for user-generated posts with support for likes, tags, saves, and publication status.
+    """
+
     author = models.ForeignKey(SocialUser, on_delete=models.CASCADE, related_name='posts')
     description = models.TextField()
     tags = TaggableManager()
@@ -31,12 +35,18 @@ class Post(models.Model):
 
 
 class Image(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='images')
+    """
+    Model for storing images related to posts with file type validation.
+    """
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='images') # user post
     file = models.ImageField(upload_to='images/posts/', validators=[FileExtensionValidator(['png', 'jpg', 'jpeg'])])
     created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Comment(models.Model):
+    """
+    Model for managing comments on posts, supporting nested replies.
+    """
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     author = models.ForeignKey(SocialUser, on_delete=models.CASCADE, related_name='comments')
     parent = models.ForeignKey('self', on_delete=models.CASCADE, related_name='sub_comments', null=True, blank=True)
@@ -54,16 +64,25 @@ class Comment(models.Model):
         ]
 
 class Story(models.Model):
+    """
+    Model for managing user stories, supporting both images and videos.
+    """
     user = models.ForeignKey(SocialUser, on_delete=models.CASCADE, related_name='stories')
-    file = models.FileField(upload_to='stories/', validators=[FileExtensionValidator(['mp4', 'png', 'jpg', 'jpeg'])])
+    file = models.FileField(upload_to='stories/', validators=[FileExtensionValidator(['mp4','webm', 'png', 'jpg', 'jpeg'])])
     is_delete = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def is_video(self):
+        """
+        Checks if the uploaded file is a video.
+        """
         video_extensions = ['.mp4', '.webm']
         return any(self.file.url.endswith(ext) for ext in video_extensions)
 
     def is_image(self):
+        """
+        Checks if the uploaded file is an image.
+        """
         image_extensions = ['.jpg', '.jpeg', '.png']
         return any(self.file.url.endswith(ext) for ext in image_extensions)
 
@@ -71,6 +90,10 @@ class Story(models.Model):
         return f"Story by {self.user} - {self.created_at}"
 
 class StoryVisit(models.Model):
+    """
+    Model for tracking user visits to stories, including user and IP address.
+    """
+
     story = models.ForeignKey(Story, on_delete=models.CASCADE, related_name='visits')
     user = models.ForeignKey(SocialUser, on_delete=models.CASCADE, related_name='story_visits')
     ip = models.GenericIPAddressField(protocol='both')
