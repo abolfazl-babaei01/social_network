@@ -133,9 +133,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
+# static files
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
+# media root
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR / 'media')
 
@@ -144,7 +146,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR / 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# login urls
 LOGIN_REDIRECT_URL = '/account/profile/'
 LOGIN_URL = '/account/login/'
 
+# send email in console
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# user auth back-ends
+
+AUTHENTICATION_BACKENDS = [
+    'account.authentication.CustomModelBackend',
+    'account.authentication.PhoneNumberAuthBackend',
+]
