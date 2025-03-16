@@ -94,10 +94,11 @@ DATABASES = {
         'NAME': 'social_network',
         'USER': 'social_net_admin',
         'PASSWORD': '1234',
-        'HOST': 'localhost',
+        'HOST': 'db',
         'PORT': '5432',
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -135,7 +136,7 @@ USE_TZ = True
 
 # static files
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = os.path.join(BASE_DIR / 'static')
 
 # media root
 MEDIA_URL = 'media/'
@@ -159,3 +160,5 @@ AUTHENTICATION_BACKENDS = [
     'account.authentication.CustomModelBackend',
     'account.authentication.PhoneNumberAuthBackend',
 ]
+
+CSRF_TRUSTED_ORIGINS = ['http://localhost', 'http://127.0.0.1']

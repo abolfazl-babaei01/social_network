@@ -1,0 +1,40 @@
+# Python bytecode files
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+env/
+.venv/
+*.env
+
+# Django specific files
+*.sqlite3
+db.sqlite3
+
+# Log files
+*.log
+
+# IDE and editor files
+.vscode/
+../.idea/
+*.sublime-workspace
+*.sublime-project
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Docker files
+Dockerfile*
+docker-compose.override.yml
+
+# Ignore test files
+tests/
+
+# Ignore configuration files for debugging or temporary files
+*.pid
+*.swp
+*.swo

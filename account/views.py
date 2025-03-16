@@ -42,7 +42,7 @@ def register(request):
 
             user.set_password(form.cleaned_data['password1'])
             form.save()
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('account:profile')
 
     else:
